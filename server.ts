@@ -1,3 +1,4 @@
+
 import express from 'express';
 import http from 'http';
 import { Server as SocketIOServer } from 'socket.io';
@@ -43,6 +44,10 @@ function getGeminiClient(): GoogleGenAI | null {
 // Real-Time Live Telemetry Engine (100 Hz broadcast simulation)
 // ----------------------------------------------------
 let connectedClientsCount = 0;
+
+// Currently authenticated users. A Set prevents duplicate counting
+// when the same user logs in more than once.
+const loggedInUsers = new Set<string>();
 let liveTelemetry = {
   heartRate: 152,
   heartRateTrend: 'stable' as 'rising' | 'stable' | 'dropping',
@@ -411,14 +416,62 @@ app.post('/api/auth/signup', (req, res) => {
 // 2. Auth: Login (Validates email & password, returns exact profile from database)
 app.post('/api/auth/login', (req, res) => {
   const { email, password } = req.body;
-  const result = db.loginUser(email, password);
-  if (!result.success) {
-    return res.status(401).json(result);
+
+  const users = db.getState().users;
+
+  const user = Object.values(users).find(
+    u => u.email === email
+  );
+
+  if (!user) {
+    return res.status(401).json({
+      success: false,
+      error: 'Invalid email or password'
+    });
   }
-  res.json(result);
+
+  if (user.password !== password) {
+    return res.status(401).json({
+      success: false,
+      error: 'Invalid email or password'
+    });
+  }
+
+  // User successfully logged in
+  loggedInUsers.add(user.id);
+
+  console.log(
+    `[Auth] User logged in: ${user.id} | Active users: ${loggedInUsers.size}`
+  );
+
+  res.json({
+    success: true,
+    user
+  });
 });
 
-// 3. Auth: Current User Profile (GET /api/me)
+// 3. Auth: Logout
+app.post('/api/auth/logout', (req, res) => {
+  const userId = (
+    req.body?.userId ||
+    req.headers['x-user-id'] ||
+    ''
+  ) as string;
+
+  if (userId) {
+    loggedInUsers.delete(userId);
+    console.log(
+      `[Auth] User logged out: ${userId} | Active users: ${loggedInUsers.size}`
+    );
+  }
+
+  res.json({
+    success: true,
+    totalUsers: loggedInUsers.size,
+  });
+});
+
+// 4. Auth: Current User Profile (GET /api/me)
 app.get('/api/me', (req, res) => {
   const userId = (req.headers['x-user-id'] || req.query.userId || 'APX-9942') as string;
   const user = db.getUserById(userId);
@@ -906,7 +959,7 @@ app.get('/api/health', (req, res) => {
     status: 'ok',
     socketIO: true,
     connectedClients: connectedClientsCount,
-    totalUsers: Object.keys(db.getState().users).length,
+    totalUsers: loggedInUsers.size,
     totalPosts: db.getState().posts.length,
     timestamp: new Date().toISOString(),
   });
