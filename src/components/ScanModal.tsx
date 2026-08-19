@@ -20,6 +20,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { API_BASE_URL } from '../utils/apiService';
 
 interface ScanModalProps {
   isOpen: boolean;
@@ -425,7 +426,7 @@ export const ScanModal: React.FC<ScanModalProps> = ({ isOpen, onClose, onScanCom
         }
       }
 
-      const res = await fetch('/api/scan-analysis', {
+      const res = await fetch(`${API_BASE_URL}/api/scan-analysis`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

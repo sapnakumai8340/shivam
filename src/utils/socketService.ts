@@ -9,6 +9,7 @@ import {
   ChatMessage
 } from '../types';
 import { LiveTelemetrySnapshot } from './realtimeStore';
+import { API_BASE_URL } from './apiService';
 
 class SocketService {
   private socket: Socket | null = null;
@@ -23,8 +24,8 @@ class SocketService {
       return this.socket;
     }
 
-    // Connect to same origin
-    this.socket = io({
+    // Connect to backend origin explicitly (needed for Capacitor APKs)
+    this.socket = io(API_BASE_URL, {
       transports: ['websocket', 'polling'],
       reconnectionAttempts: 10,
       reconnectionDelay: 1000,
