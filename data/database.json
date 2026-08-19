@@ -1,183 +1,38 @@
 {
   "users": {
-    "APX-9942": {
-      "id": "APX-9942",
-      "name": "RAHUL KUMAR",
-      "username": "@rahulkumar",
-      "email": "rahul.kumar@apex.pro",
-      "password": "password123",
+    "USR-8040": {
+      "id": "USR-8040",
+      "name": "SHIVAM",
+      "username": "@s",
+      "email": "sha@gmail.com",
+      "password": "123456",
       "role": "player",
-      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80",
+      "avatar": "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=256&q=80",
       "actionImage": "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=80",
-      "code": "#APX-9942",
-      "position": "FWD",
-      "roleTitle": "CENTER FORWARD",
-      "number": 9,
-      "phone": "+91 98765 43210",
-      "sportSpecialty": "Football (Striker / Finishing)",
+      "code": "#USR-8040",
+      "position": "LW",
+      "roleTitle": "FORWARD (LW)",
+      "number": 10,
+      "phone": "1234567890",
+      "sportSpecialty": "Football",
       "status": "ACTIVE",
-      "overallRating": 95.4,
-      "ratingChange": 1.2,
-      "height": "182 cm",
-      "weight": "75 kg",
-      "preferredFoot": "Right",
-      "age": 22,
-      "club": "Kheltantra FC",
-      "bio": "Apex Pro Center Forward. Verified 34.8 km/h top sprint speed, 96% force symmetry, and Durand Cup Golden Boot contender.",
-      "createdAt": 1776623660801,
-      "coachEvaluation": "Elite finishing composure with 99th percentile high-speed sprint velocity. ACL decelerative torque is well within safety thresholds.",
-      "adminDecision": {
-        "evaluatedBy": "Coach Vikram Rathore",
-        "decisionDate": "14 Aug 2026",
-        "clearanceStatus": "MATCH READY",
-        "maxWorkloadM": 12000,
-        "targetPaceKmH": 34.5,
-        "trainingFocus": "Near-post box runs & transition sprint endurance",
-        "notes": "Full clearance granted for Friday fixture against Titan United FC.",
-        "isVerified": true
-      },
-      "stats": {
-        "games": 28,
-        "goals": 24,
-        "assists": 9,
-        "topSpeed": 34.8,
-        "passAccuracy": 89,
-        "shotConversion": 32,
-        "stamina": 92,
-        "symmetry": 96,
-        "injuryRisk": "LOW",
-        "acwr": 1.14,
-        "forceBalance": {
-          "left": 49,
-          "right": 51
-        }
-      },
-      "recentMatches": [
-        {
-          "id": "m-1",
-          "opponent": "Mumbai City FC",
-          "isHome": true,
-          "date": "12 Aug 2026",
-          "result": "W 3-1",
-          "rating": 9.4,
-          "score": "3 - 1",
-          "status": "completed",
-          "venue": "Apex Stadium",
-          "goalsScored": 2,
-          "assistsGiven": 1,
-          "minutesPlayed": 88
-        },
-        {
-          "id": "m-2",
-          "opponent": "Mohun Bagan SG",
-          "isHome": false,
-          "date": "05 Aug 2026",
-          "result": "W 2-0",
-          "rating": 9.1,
-          "score": "2 - 0",
-          "status": "completed",
-          "venue": "Salt Lake Arena",
-          "goalsScored": 1,
-          "assistsGiven": 0,
-          "minutesPlayed": 90
-        },
-        {
-          "id": "m-3",
-          "opponent": "Bengaluru FC",
-          "isHome": true,
-          "date": "28 Jul 2026",
-          "result": "D 2-2",
-          "rating": 8.8,
-          "score": "2 - 2",
-          "status": "completed",
-          "venue": "Apex Stadium",
-          "goalsScored": 1,
-          "assistsGiven": 1,
-          "minutesPlayed": 90
-        },
-        {
-          "id": "m-4",
-          "opponent": "Kerala Blasters",
-          "isHome": false,
-          "date": "20 Jul 2026",
-          "result": "W 1-0",
-          "rating": 8.9,
-          "score": "1 - 0",
-          "status": "completed",
-          "venue": "Jawaharlal Nehru Stadium",
-          "goalsScored": 1,
-          "assistsGiven": 0,
-          "minutesPlayed": 84
-        }
-      ],
-      "ratingHistory": [
-        {
-          "month": "MAR",
-          "rating": 88.5,
-          "note": "Pre-season baseline testing"
-        },
-        {
-          "month": "APR",
-          "rating": 90.2,
-          "note": "Cardio capacity +4% VO2max"
-        },
-        {
-          "month": "MAY",
-          "rating": 91.8,
-          "note": "Max sprint speed 33.8 km/h"
-        },
-        {
-          "month": "JUN",
-          "rating": 93,
-          "note": "ACL asymmetry normalized to 96%"
-        },
-        {
-          "month": "JUL",
-          "rating": 94.2,
-          "note": "Matchday MVP in Durand Cup"
-        },
-        {
-          "month": "AUG",
-          "rating": 95.4,
-          "note": "Current elite form • 99th percentile"
-        }
-      ],
-      "highlights": [],
-      "tapes": []
-    },
-    "ADM-101": {
-      "id": "ADM-101",
-      "name": "COACH VIKRAM RATHORE",
-      "username": "@coachvikram",
-      "email": "vikram.coach@apex.pro",
-      "password": "password123",
-      "role": "admin",
-      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80",
-      "actionImage": "https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&w=1000&q=80",
-      "code": "#ADM-101",
-      "position": "STAFF",
-      "roleTitle": "HEAD PERFORMANCE COACH",
-      "number": 1,
-      "phone": "+91 98111 22334",
-      "sportSpecialty": "Tactical Periodization & GPS Biomechanics",
-      "status": "ACTIVE",
-      "overallRating": 98,
+      "overallRating": 88,
       "ratingChange": 0,
-      "height": "185 cm",
-      "weight": "80 kg",
+      "height": "178 cm",
+      "weight": "72 kg",
       "preferredFoot": "Right",
-      "age": 38,
-      "club": "Kheltantra FC",
-      "bio": "Head Performance Coach at Kheltantra. UEFA Pro License, specialized in workload periodization, 100 Hz GPS analysis, and tactical formations.",
-      "createdAt": 1755455660801,
+      "age": 21,
+      "club": "Kheltantra Athletes FC",
+      "bio": "shivam is a competitive athlete tracking biomechanics and match performance on Kheltantra.",
+      "createdAt": 1787164566111,
       "stats": {
-        "games": 140,
+        "games": 0,
         "goals": 0,
         "assists": 0,
         "topSpeed": 0,
         "passAccuracy": 0,
         "shotConversion": 0,
-        "stamina": 95,
+        "stamina": 85,
         "symmetry": 100,
         "injuryRisk": "LOW",
         "acwr": 1,
@@ -189,168 +44,12 @@
       "recentMatches": [],
       "ratingHistory": [],
       "highlights": [],
-      "tapes": []
-    },
-    "APX-9943": {
-      "id": "APX-9943",
-      "name": "MARCUS STERLING",
-      "username": "@marcus_s",
-      "email": "marcus.sterling@apex.pro",
-      "password": "password123",
-      "role": "player",
-      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80",
-      "actionImage": "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=80",
-      "code": "#APX-9943",
-      "position": "WNG",
-      "roleTitle": "LEFT WINGER",
-      "number": 7,
-      "sportSpecialty": "Football",
-      "status": "ACTIVE",
-      "overallRating": 93.8,
-      "ratingChange": 0.8,
-      "height": "179 cm",
-      "weight": "71 kg",
-      "age": 21,
-      "club": "Kheltantra FC",
-      "createdAt": 1779215660802,
-      "stats": {
-        "games": 26,
-        "goals": 14,
-        "assists": 16,
-        "topSpeed": 35.1,
-        "passAccuracy": 86,
-        "shotConversion": 28,
-        "stamina": 90,
-        "symmetry": 94,
-        "injuryRisk": "LOW",
-        "acwr": 1.18,
-        "forceBalance": {
-          "left": 47,
-          "right": 53
-        }
-      },
-      "recentMatches": [],
-      "ratingHistory": []
-    },
-    "APX-9944": {
-      "id": "APX-9944",
-      "name": "LEO SILVA",
-      "username": "@leosilva",
-      "email": "leo.silva@apex.pro",
-      "password": "password123",
-      "role": "player",
-      "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80",
-      "code": "#APX-9944",
-      "position": "MID",
-      "roleTitle": "CENTRAL PLAYMAKER",
-      "number": 10,
-      "sportSpecialty": "Football",
-      "status": "ACTIVE",
-      "overallRating": 92.5,
-      "ratingChange": 0.5,
-      "height": "175 cm",
-      "weight": "68 kg",
-      "age": 23,
-      "club": "Kheltantra FC",
-      "createdAt": 1777487660802,
-      "stats": {
-        "games": 27,
-        "goals": 8,
-        "assists": 21,
-        "topSpeed": 31.8,
-        "passAccuracy": 93,
-        "shotConversion": 22,
-        "stamina": 89,
-        "symmetry": 97,
-        "injuryRisk": "LOW",
-        "acwr": 1.08,
-        "forceBalance": {
-          "left": 49,
-          "right": 51
-        }
-      },
-      "recentMatches": [],
-      "ratingHistory": []
-    },
-    "APX-9945": {
-      "id": "APX-9945",
-      "name": "DAVID CHEN",
-      "username": "@davidchen",
-      "email": "david.chen@apex.pro",
-      "password": "password123",
-      "role": "player",
-      "avatar": "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=256&q=80",
-      "code": "#APX-9945",
-      "position": "DEF",
-      "roleTitle": "CENTER BACK",
-      "number": 4,
-      "sportSpecialty": "Football",
-      "status": "ACTIVE",
-      "overallRating": 91,
-      "ratingChange": -0.2,
-      "height": "188 cm",
-      "weight": "82 kg",
-      "age": 24,
-      "club": "Kheltantra FC",
-      "createdAt": 1778351660802,
-      "stats": {
-        "games": 25,
-        "goals": 3,
-        "assists": 2,
-        "topSpeed": 32.2,
-        "passAccuracy": 88,
-        "shotConversion": 15,
-        "stamina": 91,
-        "symmetry": 91,
-        "injuryRisk": "MODERATE",
-        "acwr": 1.28,
-        "forceBalance": {
-          "left": 45,
-          "right": 55
-        }
-      },
-      "recentMatches": [],
-      "ratingHistory": []
-    },
-    "APX-9946": {
-      "id": "APX-9946",
-      "name": "ARJUN SHARMA",
-      "username": "@arjun_s",
-      "email": "arjun.sharma@apex.pro",
-      "password": "password123",
-      "role": "player",
-      "avatar": "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=256&q=80",
-      "code": "#APX-9946",
-      "position": "MID",
-      "roleTitle": "BOX-TO-BOX MIDFIELDER",
-      "number": 8,
-      "sportSpecialty": "Football",
-      "status": "ACTIVE",
-      "overallRating": 90.4,
-      "ratingChange": 0.6,
-      "height": "180 cm",
-      "weight": "74 kg",
-      "age": 22,
-      "club": "Kheltantra FC",
-      "createdAt": 1780079660802,
-      "stats": {
-        "games": 24,
-        "goals": 6,
-        "assists": 9,
-        "topSpeed": 30.9,
-        "passAccuracy": 89,
-        "shotConversion": 20,
-        "stamina": 93,
-        "symmetry": 95,
-        "injuryRisk": "LOW",
-        "acwr": 1.05,
-        "forceBalance": {
-          "left": 50,
-          "right": 50
-        }
-      },
-      "recentMatches": [],
-      "ratingHistory": []
+      "tapes": [],
+      "handle": "@s",
+      "postsCount": 0,
+      "followersCount": 0,
+      "followingCount": 0,
+      "isFollowing": false
     }
   },
   "follows": [],
@@ -358,195 +57,11 @@
   "likes": [],
   "comments": [],
   "notifications": [],
-  "scans": [
-    {
-      "id": "scan-01",
-      "athleteName": "RAHUL KUMAR",
-      "athleteId": "APX-9942",
-      "scanDate": "14 Aug 2026",
-      "scanType": "LOWER BODY",
-      "efficiencyScore": 96,
-      "symmetry": 96,
-      "injuryRisk": "LOW",
-      "forceBalance": {
-        "left": 49,
-        "right": 51
-      },
-      "imageUrl": "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=600&q=80",
-      "analysisTitle": "Patellofemoral & Hamstring Deceleration Profile",
-      "metrics": {
-        "jointLoadN": 1240,
-        "flexionDeg": 38,
-        "torqueNm": 184,
-        "muscleActivationPct": 94,
-        "vmoStrain": 12,
-        "groundForce": 1250
-      },
-      "notes": [
-        "Hamstring bilateral force output demonstrates a safe 96% symmetry rating.",
-        "Decelerative knee torque stabilizes at 178 Nm during maximal cutbacks.",
-        "Single-leg banded clamshells maintain optimal glute medius firing."
-      ]
-    }
-  ],
-  "fixtures": [
-    {
-      "id": "fix-01",
-      "sport": "FOOTBALL",
-      "matchType": "League Derby",
-      "opponent": "Titan United FC",
-      "opponentLogo": "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=128&q=80",
-      "competition": "National Super League 2026",
-      "dateTime": "Friday, Aug 21 • 19:30 IST",
-      "dateTimestamp": 1787337260839,
-      "venue": "Apex Arena Stadium",
-      "surfaceType": "Natural Grass (Damp)",
-      "weatherCondition": "Clear Night 22°C",
-      "isHome": true,
-      "tacticalFormation": "4-3-3 Attacking High-Press",
-      "assignedLineup": [
-        {
-          "playerId": "APX-9942",
-          "playerName": "RAHUL KUMAR",
-          "number": 9,
-          "position": "FWD",
-          "role": "Starter",
-          "readiness": 95,
-          "status": "Confirmed"
-        },
-        {
-          "playerId": "APX-9943",
-          "playerName": "MARCUS STERLING",
-          "number": 7,
-          "position": "WNG",
-          "role": "Starter",
-          "readiness": 94,
-          "status": "Confirmed"
-        },
-        {
-          "playerId": "APX-9944",
-          "playerName": "LEO SILVA",
-          "number": 10,
-          "position": "MID",
-          "role": "Starter",
-          "readiness": 93,
-          "status": "Confirmed"
-        },
-        {
-          "playerId": "APX-9945",
-          "playerName": "DAVID CHEN",
-          "number": 4,
-          "position": "DEF",
-          "role": "Starter",
-          "readiness": 91,
-          "status": "Confirmed"
-        },
-        {
-          "playerId": "APX-9946",
-          "playerName": "ARJUN SHARMA",
-          "number": 8,
-          "position": "MID",
-          "role": "Starter",
-          "readiness": 90,
-          "status": "Confirmed"
-        }
-      ],
-      "adminDirectives": [
-        "Exploit space behind Titan fullbacks via Rahul Kumar sprint breakout.",
-        "Press high in first 25 minutes to disrupt opponent build-up from back."
-      ],
-      "readinessScore": 94.2,
-      "status": "Scheduled"
-    }
-  ],
+  "scans": [],
+  "fixtures": [],
   "stories": [],
   "chatMessages": [],
-  "sessions": [
-    {
-      "id": "sess-01",
-      "athleteId": "APX-9942",
-      "athleteName": "RAHUL KUMAR",
-      "sessionType": "MATCH",
-      "title": "Full 90m Match vs Mumbai City FC",
-      "date": "12 Aug 2026",
-      "timestamp": 1786559660839,
-      "durationMinutes": 88,
-      "topSpeedKmh": 34.8,
-      "avgHeartRateBpm": 152,
-      "maxHeartRateBpm": 189,
-      "distanceKm": 11.4,
-      "leftGroundForceN": 1240,
-      "rightGroundForceN": 1265,
-      "symmetryPct": 96,
-      "jointTorqueNm": 184,
-      "acwr": 1.14,
-      "rpeLoadScore": 8.5,
-      "notes": "2 Goals, 1 Assist. Peak sprint velocity hit in 30th minute counter-attack.",
-      "telemetryPoints": [
-        {
-          "minute": 0,
-          "label": "0'",
-          "velocityKmh": 0,
-          "heartRateBpm": 74,
-          "leftGroundForceN": 720,
-          "rightGroundForceN": 730,
-          "jointTorqueNm": 85
-        },
-        {
-          "minute": 15,
-          "label": "15'",
-          "velocityKmh": 28.4,
-          "heartRateBpm": 148,
-          "leftGroundForceN": 1190,
-          "rightGroundForceN": 1210,
-          "jointTorqueNm": 156
-        },
-        {
-          "minute": 30,
-          "label": "30'",
-          "velocityKmh": 34.8,
-          "heartRateBpm": 179,
-          "leftGroundForceN": 1470,
-          "rightGroundForceN": 1480,
-          "jointTorqueNm": 208
-        },
-        {
-          "minute": 45,
-          "label": "HT",
-          "velocityKmh": 12,
-          "heartRateBpm": 116,
-          "leftGroundForceN": 840,
-          "rightGroundForceN": 850,
-          "jointTorqueNm": 95
-        },
-        {
-          "minute": 60,
-          "label": "60'",
-          "velocityKmh": 33.4,
-          "heartRateBpm": 174,
-          "leftGroundForceN": 1390,
-          "rightGroundForceN": 1420,
-          "jointTorqueNm": 194
-        },
-        {
-          "minute": 75,
-          "label": "75'",
-          "velocityKmh": 30.2,
-          "heartRateBpm": 176,
-          "leftGroundForceN": 1290,
-          "rightGroundForceN": 1340,
-          "jointTorqueNm": 178
-        },
-        {
-          "minute": 88,
-          "label": "88'",
-          "velocityKmh": 32.8,
-          "heartRateBpm": 189,
-          "leftGroundForceN": 1370,
-          "rightGroundForceN": 1450,
-          "jointTorqueNm": 190
-        }
-      ]
-    }
-  ]
+  "sessions": [],
+  "courses": [],
+  "courseProgress": {}
 }

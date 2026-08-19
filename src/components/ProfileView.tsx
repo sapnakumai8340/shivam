@@ -45,6 +45,13 @@ interface ProfileViewProps {
   onSelectPlayerProfile?: (playerId: string) => void;
 }
 
+const getSportFromSpecialty = (specialty?: string): 'Cricket' | 'Basketball' | 'Football' => {
+  const spec = (specialty || '').toLowerCase();
+  if (spec.includes('cricket')) return 'Cricket';
+  if (spec.includes('basketball')) return 'Basketball';
+  return 'Football';
+};
+
 export const ProfileView: React.FC<ProfileViewProps> = ({
   athlete,
   role,
@@ -64,6 +71,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
   const isAdmin =
     role === 'admin' ||
+    role === 'coach' ||
     athlete.position === 'STAFF' ||
     athlete.role?.toLowerCase().includes('coach') ||
     athlete.role?.toLowerCase().includes('admin') ||
@@ -203,6 +211,21 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             {athlete.handle || `@${athlete.name.toLowerCase().replace(/\s+/g, '')}_${athlete.number || 9}`} •{' '}
             {athlete.club || (isAdmin ? 'Apex Performance Desk' : 'Apex Premier Squad')}
           </p>
+
+          {/* Personal profile QR code - unique for every player and admin */}
+          <div className="mt-4 flex flex-col items-center gap-2">
+            <div className="bg-white p-2 rounded-xl shadow-lg">
+              <img
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&margin=0&data=${encodeURIComponent(`apex://profile/${athlete.id}`)}`}
+                alt={`QR code for ${athlete.name}`}
+                className="w-28 h-28"
+              />
+            </div>
+            <div className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">
+              {isAdmin ? 'Admin Profile QR' : 'Player Profile QR'}
+            </div>
+            <div className="text-[8px] text-slate-600 font-mono">ID: {athlete.id}</div>
+          </div>
 
           {/* Sport Speciality / Discipline Badge */}
           <div className="flex items-center justify-center mt-2">
@@ -409,7 +432,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               </div>
             </div>
 
-            {role === 'admin' && (
+            {(role === 'admin' || role === 'coach') && (
               <button
                 onClick={onAdminDecidePerformance}
                 className="text-[10px] font-black text-[#ff5500] hover:text-[#ff7722] uppercase tracking-wider flex items-center gap-1 bg-[#ff5500]/10 px-2 py-1 rounded-lg border border-[#ff5500]/20"
@@ -606,23 +629,67 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             </p>
           </div>
 
-          <div className="bg-[#151c24] border border-slate-800/90 rounded-2xl p-3.5 shadow-md">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              {isAdmin ? 'GOALS MANAGED' : 'GOALS'}
-            </span>
-            <p className="text-2xl font-black text-white mt-0.5">
-              {athlete.stats?.goals ?? 0}
-            </p>
-          </div>
+          {getSportFromSpecialty(athlete.sportSpecialty) === 'Cricket' ? (
+            <>
+              <div className="bg-[#151c24] border border-slate-800/90 rounded-2xl p-3.5 shadow-md">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  {isAdmin ? 'TOTAL RUNS' : 'RUNS'}
+                </span>
+                <p className="text-2xl font-black text-white mt-0.5">
+                  {athlete.stats?.runs ?? 0}
+                </p>
+              </div>
 
-          <div className="bg-[#151c24] border border-slate-800/90 rounded-2xl p-3.5 shadow-md">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              {isAdmin ? 'TACTICAL ASSISTS' : 'ASSISTS'}
-            </span>
-            <p className="text-2xl font-black text-white mt-0.5">
-              {athlete.stats?.assists ?? 0}
-            </p>
-          </div>
+              <div className="bg-[#151c24] border border-slate-800/90 rounded-2xl p-3.5 shadow-md">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  {isAdmin ? 'TOTAL WICKETS' : 'WICKETS'}
+                </span>
+                <p className="text-2xl font-black text-white mt-0.5">
+                  {athlete.stats?.wickets ?? 0}
+                </p>
+              </div>
+            </>
+          ) : getSportFromSpecialty(athlete.sportSpecialty) === 'Basketball' ? (
+            <>
+              <div className="bg-[#151c24] border border-slate-800/90 rounded-2xl p-3.5 shadow-md">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  {isAdmin ? 'POINTS SCORED' : 'POINTS'}
+                </span>
+                <p className="text-2xl font-black text-white mt-0.5">
+                  {athlete.stats?.points ?? 0}
+                </p>
+              </div>
+
+              <div className="bg-[#151c24] border border-slate-800/90 rounded-2xl p-3.5 shadow-md">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  {isAdmin ? 'TACTICAL ASSISTS' : 'ASSISTS'}
+                </span>
+                <p className="text-2xl font-black text-white mt-0.5">
+                  {athlete.stats?.assists ?? 0}
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="bg-[#151c24] border border-slate-800/90 rounded-2xl p-3.5 shadow-md">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  {isAdmin ? 'GOALS MANAGED' : 'GOALS'}
+                </span>
+                <p className="text-2xl font-black text-white mt-0.5">
+                  {athlete.stats?.goals ?? 0}
+                </p>
+              </div>
+
+              <div className="bg-[#151c24] border border-slate-800/90 rounded-2xl p-3.5 shadow-md">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  {isAdmin ? 'TACTICAL ASSISTS' : 'ASSISTS'}
+                </span>
+                <p className="text-2xl font-black text-white mt-0.5">
+                  {athlete.stats?.assists ?? 0}
+                </p>
+              </div>
+            </>
+          )}
 
           <div className="bg-[#151c24] border border-slate-800/90 rounded-2xl p-3.5 shadow-md">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">

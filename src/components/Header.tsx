@@ -45,7 +45,7 @@ export const Header: React.FC<HeaderProps> = ({ role, athlete, onToggleRole, onO
     {
       id: 1,
       title: 'Biomechanical Scan Ready',
-      desc: 'Marcus Rush lower-body scan completed (Symmetry 96%).',
+      desc: 'Player lower-body scan completed (Symmetry 96%).',
       time: 'Just now',
       type: 'scan',
     },
@@ -96,9 +96,9 @@ export const Header: React.FC<HeaderProps> = ({ role, athlete, onToggleRole, onO
               />
             </div>
             <span className={`absolute -bottom-1 -right-1 text-[8px] font-black px-1 rounded text-white uppercase tracking-wider ${
-              role === 'admin' ? 'bg-indigo-600' : 'bg-[#ff5500]'
+              role === 'admin' ? 'bg-indigo-600' : role === 'coach' ? 'bg-blue-600' : 'bg-[#ff5500]'
             }`}>
-              {role === 'player' ? 'ATH' : 'ADM'}
+              {role === 'player' ? 'ATH' : role === 'coach' ? 'COA' : 'ADM'}
             </span>
           </button>
 

@@ -76,14 +76,14 @@ export const ManagementView: React.FC<ManagementViewProps> = ({
 
   const currentLoggedInPlayer: PlayerManagementProfile = loggedInMatch || {
     id: currentAthlete?.id || 'APX-9942',
-    name: currentAthlete?.name || 'Marcus Rush',
-    avatar: currentAthlete?.avatar || 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80',
+    name: currentAthlete?.name || 'Rahul Kumar',
+    avatar: currentAthlete?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80',
     jerseyNumber: currentAthlete?.number || 9,
     position: currentAthlete?.role || currentAthlete?.position || 'FWD (ST)',
     sportSpecialty: currentAthlete?.sportSpecialty || 'Football (Striker)',
     phone: currentAthlete?.phone || '+91 98765 43210',
     email: `${(currentAthlete?.handle || currentAthlete?.name || 'player').toLowerCase().replace(/[^a-z0-9]/g, '')}@apexacademy.org`,
-    guardianName: currentAthlete?.guardianName || 'Robert Rush',
+    guardianName: currentAthlete?.guardianName || 'Guardian',
     guardianPhone: currentAthlete?.guardianPhone || '+91 98765 00001',
     joiningDate: '15 Jan 2026',
     monthlyFee: 2500,

@@ -7,8 +7,8 @@ import {
 
 
 export const API_BASE_URL = (
-  import.meta.env.VITE_API_URL ||
-  'https://shivamkumar-lw4a.onrender.com'
+  (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_API_URL) ||
+  (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3005')
 ).replace(/\/+$/, '');
 
 class ApiService {
@@ -769,22 +769,205 @@ class ApiService {
     error?: string;
   }> {
     try {
-      const res = await fetch(
-        this.buildUrl('/api/sessions'),
-        {
-          method: 'POST',
-          headers: this.getHeaders(sessionData.athleteId),
-          body: JSON.stringify(sessionData),
-        }
-      );
+      const res = await fetch(this.buildUrl('/api/sessions'), {
+        method: 'POST',
+        headers: this.getHeaders(sessionData.athleteId),
+        body: JSON.stringify(sessionData),
+      });
 
       return await this.parseResponse(res);
     } catch (e: any) {
       return {
         success: false,
-        error:
-          e?.message ||
-          'Network error logging session',
+        error: e?.message || 'Network error logging session',
+      };
+    }
+  }
+
+  // ==========================================================
+  // 21. COURSES & ACADEMY LEARNING PLATFORM
+  // ==========================================================
+
+  async getCourses(includeAll = false): Promise<{
+    courses: any[];
+    error?: string;
+  }> {
+    try {
+      const res = await fetch(
+        this.buildUrl('/api/courses', {
+          all: includeAll ? 'true' : undefined,
+        }),
+        {
+          headers: this.getHeaders(),
+        }
+      );
+
+      const data = await this.parseResponse<{
+        courses?: any[];
+        error?: string;
+      }>(res);
+
+      return {
+        courses: Array.isArray(data.courses) ? data.courses : [],
+        error: data.error,
+      };
+    } catch (e: any) {
+      return {
+        courses: [],
+        error: e?.message,
+      };
+    }
+  }
+
+  async getCourse(id: string): Promise<{
+    course?: any;
+    error?: string;
+  }> {
+    try {
+      const res = await fetch(this.buildUrl(`/api/courses/${id}`), {
+        headers: this.getHeaders(),
+      });
+
+      const data = await this.parseResponse<{
+        course?: any;
+        error?: string;
+      }>(res);
+
+      return {
+        course: data.course,
+        error: data.error,
+      };
+    } catch (e: any) {
+      return {
+        error: e?.message,
+      };
+    }
+  }
+
+  async saveCourse(courseData: any): Promise<{
+    success: boolean;
+    course?: any;
+    error?: string;
+  }> {
+    try {
+      const isEdit = !!courseData.id;
+      const url = isEdit ? `/api/courses/${courseData.id}` : '/api/courses';
+      const method = isEdit ? 'PUT' : 'POST';
+
+      const res = await fetch(this.buildUrl(url), {
+        method,
+        headers: this.getHeaders(),
+        body: JSON.stringify(courseData),
+      });
+
+      return await this.parseResponse(res);
+    } catch (e: any) {
+      return {
+        success: false,
+        error: e?.message || 'Network error saving course',
+      };
+    }
+  }
+
+  async deleteCourse(id: string): Promise<{
+    success: boolean;
+    error?: string;
+  }> {
+    try {
+      const res = await fetch(this.buildUrl(`/api/courses/${id}`), {
+        method: 'DELETE',
+        headers: this.getHeaders(),
+      });
+
+      return await this.parseResponse(res);
+    } catch (e: any) {
+      return {
+        success: false,
+        error: e?.message || 'Network error deleting course',
+      };
+    }
+  }
+
+  async enrollCourse(courseId: string, userId?: string): Promise<{
+    success: boolean;
+    progress?: any;
+    error?: string;
+  }> {
+    try {
+      const res = await fetch(this.buildUrl(`/api/courses/${courseId}/enroll`), {
+        method: 'POST',
+        headers: this.getHeaders(userId),
+        body: JSON.stringify({ userId }),
+      });
+
+      return await this.parseResponse(res);
+    } catch (e: any) {
+      return {
+        success: false,
+        error: e?.message || 'Network error enrolling in course',
+      };
+    }
+  }
+
+  async updateCourseProgress(
+    courseId: string,
+    lessonId: string,
+    positionSec = 0,
+    completed = false,
+    userId?: string
+  ): Promise<{
+    success: boolean;
+    progress?: any;
+    error?: string;
+  }> {
+    try {
+      const res = await fetch(this.buildUrl(`/api/courses/${courseId}/progress`), {
+        method: 'POST',
+        headers: this.getHeaders(userId),
+        body: JSON.stringify({
+          userId,
+          lessonId,
+          positionSec,
+          completed,
+        }),
+      });
+
+      return await this.parseResponse(res);
+    } catch (e: any) {
+      return {
+        success: false,
+        error: e?.message || 'Network error updating course progress',
+      };
+    }
+  }
+
+  async getUserCoursesProgress(userId?: string): Promise<{
+    progress: Record<string, any>;
+    error?: string;
+  }> {
+    try {
+      const res = await fetch(
+        this.buildUrl('/api/courses-progress', {
+          userId,
+        }),
+        {
+          headers: this.getHeaders(userId),
+        }
+      );
+
+      const data = await this.parseResponse<{
+        progress?: Record<string, any>;
+        error?: string;
+      }>(res);
+
+      return {
+        progress: data.progress || {},
+        error: data.error,
+      };
+    } catch (e: any) {
+      return {
+        progress: {},
+        error: e?.message,
       };
     }
   }

@@ -1,19 +1,19 @@
 import { useEffect, useState, useCallback } from 'react';
-import { 
-  AthleteProfile, 
-  BiomechanicalScan, 
-  FixtureSchedule, 
-  SocialPost, 
-  PlayerStory, 
+import {
+  AthleteProfile,
+  BiomechanicalScan,
+  FixtureSchedule,
+  SocialPost,
+  PlayerStory,
   FollowerNotification,
-  SquadPlayerTelemetry 
+  SquadPlayerTelemetry
 } from '../types';
-import { 
-  createRealtimeAthlete, 
-  createRealtimeScans, 
-  createRealtimeFixtures, 
-  createRealtimeSocialPosts, 
-  createRealtimeStories, 
+import {
+  createRealtimeAthlete,
+  createRealtimeScans,
+  createRealtimeFixtures,
+  createRealtimeSocialPosts,
+  createRealtimeStories,
   createRealtimeNotifications
 } from './realtimeData';
 
@@ -45,7 +45,7 @@ function saveStorage<T>(key: string, data: T): void {
   try {
     localStorage.setItem(key, JSON.stringify(data));
   } catch (e) {
-    console.warn(`Failed to save to localStorage for ${key}`, e);
+    console.warn(` to save to localStorage for ${key}`, e);
   }
 }
 

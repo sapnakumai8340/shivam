@@ -46,7 +46,7 @@ export const SchedulingView: React.FC<SchedulingViewProps> = ({
   onSwitchRole,
   onOpenLogin,
 }) => {
-  const isAdmin = role === 'admin';
+  const isAdmin = role === 'admin' || role === 'coach';
   const [searchQuery, setSearchQuery] = useState('');
   const [sportFilter, setSportFilter] = useState<SportType | 'ALL'>('ALL');
   const [statusFilter, setStatusFilter] = useState<'ALL' | 'Scheduled' | 'In Progress' | 'Finished'>('ALL');

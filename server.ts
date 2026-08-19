@@ -4,6 +4,7 @@ import http from 'http';
 import { Server as SocketIOServer } from 'socket.io';
 import path from 'path';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import { GoogleGenAI } from '@google/genai';
 import { createServer as createViteServer } from 'vite';
 import { db } from './server/db';
@@ -19,7 +20,12 @@ const io = new SocketIOServer(httpServer, {
   },
 });
 
-const PORT = 3004;
+const PORT = 3006;
+
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS']
+}));
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
@@ -49,23 +55,23 @@ let connectedClientsCount = 0;
 // when the same user logs in more than once.
 const loggedInUsers = new Set<string>();
 let liveTelemetry = {
-  heartRate: 152,
+  heartRate: 0,
   heartRateTrend: 'stable' as 'rising' | 'stable' | 'dropping',
-  currentSpeed: 32.4,
-  speedDelta: 0.8,
-  cadenceRpm: 184,
-  pitchX: 68,
-  pitchY: 42,
-  hrvMs: 76,
-  groundForceLeft: 1240,
-  groundForceRight: 1265,
-  bilateralSymmetry: 96,
-  kneeTorqueNm: 184,
-  activeSessionDurationSec: 2530,
-  isSessionActive: true,
-  intensityZone: 'Threshold (Z4)' as 'Recovery (Z1)' | 'Aerobic (Z2)' | 'Tempo (Z3)' | 'Threshold (Z4)' | 'Neuromuscular Peak (Z5)',
-  acwrLive: 1.14,
-  fatigueIndex: 18,
+  currentSpeed: 0,
+  speedDelta: 0,
+  cadenceRpm: 0,
+  pitchX: 50,
+  pitchY: 50,
+  hrvMs: 0,
+  groundForceLeft: 0,
+  groundForceRight: 0,
+  bilateralSymmetry: 0,
+  kneeTorqueNm: 0,
+  activeSessionDurationSec: 0,
+  isSessionActive: false,
+  intensityZone: 'Recovery (Z1)' as 'Recovery (Z1)' | 'Aerobic (Z2)' | 'Tempo (Z3)' | 'Threshold (Z4)' | 'Neuromuscular Peak (Z5)',
+  acwrLive: 0,
+  fatigueIndex: 0,
 };
 
 // setInterval(() => {
@@ -123,22 +129,22 @@ async function generateSportsAiResponse(params: {
     },
     nextMatch: nextFixture
       ? {
-          opponent: nextFixture.opponent,
-          competition: nextFixture.competition,
-          dateTime: nextFixture.dateTime,
-          venue: nextFixture.venue,
-          tacticalFormation: nextFixture.tacticalFormation,
-          readinessScorePct: nextFixture.readinessScore,
-        }
+        opponent: nextFixture.opponent,
+        competition: nextFixture.competition,
+        dateTime: nextFixture.dateTime,
+        venue: nextFixture.venue,
+        tacticalFormation: nextFixture.tacticalFormation,
+        readinessScorePct: nextFixture.readinessScore,
+      }
       : null,
     latestBiomechanicalScan: latestScan
       ? {
-          title: latestScan.analysisTitle,
-          kneeFlexionDeg: latestScan.metrics?.flexionDeg || 38,
-          vmoStrain: latestScan.metrics?.vmoStrain || 12,
-          groundForceN: latestScan.metrics?.groundForce || 2505,
-          notes: latestScan.notes || [],
-        }
+        title: latestScan.analysisTitle,
+        kneeFlexionDeg: latestScan.metrics?.flexionDeg || 38,
+        vmoStrain: latestScan.metrics?.vmoStrain || 12,
+        groundForceN: latestScan.metrics?.groundForce || 2505,
+        notes: latestScan.notes || [],
+      }
       : null,
     coachMode: mode,
   };
@@ -661,10 +667,89 @@ app.put('/api/fixtures/:id', (req, res) => {
 });
 
 // 21. Fixtures: Delete official fixture (Admin only)
-app.delete('/api/fixtures/:id', (req, res) => {
-  db.deleteFixture(req.params.id);
-  io.emit('fixture:deleted', req.params.id);
-  res.json({ success: true });
+// 21b. Performance Sessions Management
+app.get('/api/sessions', (req, res) => {
+  const athleteId = req.query.athleteId as string;
+  const sessionsList = db.getSessions(athleteId);
+  res.json({ success: true, sessions: sessionsList });
+});
+
+app.post('/api/sessions', (req, res) => {
+  try {
+    const sessionData = req.body;
+    const result = db.addSession(sessionData);
+    io.emit('session:created', result.session);
+    if (result.athlete) {
+      io.emit('athlete:updated', result.athlete);
+      io.emit('community:updated', db.getCommunityAthletesMap());
+    }
+    res.json({ success: true, session: result.session, athlete: result.athlete });
+  } catch (err: any) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+});
+
+// 21c. Courses & Academy Learning Platform
+app.get('/api/courses', (req, res) => {
+  const includeUnpublished = req.query.all === 'true' || req.query.admin === 'true';
+  const courses = db.getCourses(includeUnpublished);
+  res.json({ success: true, courses });
+});
+
+app.get('/api/courses/:id', (req, res) => {
+  const course = db.getCourseById(req.params.id);
+  if (!course) {
+    return res.status(404).json({ success: false, error: 'Course not found' });
+  }
+  res.json({ success: true, course });
+});
+
+app.post('/api/courses', (req, res) => {
+  try {
+    const result = db.saveCourse(req.body);
+    io.emit('course:created', result.course);
+    res.status(201).json(result);
+  } catch (err: any) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+});
+
+app.put('/api/courses/:id', (req, res) => {
+  try {
+    const result = db.saveCourse({ ...req.body, id: req.params.id });
+    io.emit('course:updated', result.course);
+    res.json(result);
+  } catch (err: any) {
+    res.status(400).json({ success: false, error: err.message });
+  }
+});
+
+app.delete('/api/courses/:id', (req, res) => {
+  const result = db.deleteCourse(req.params.id);
+  if (result.success) {
+    io.emit('course:deleted', req.params.id);
+  }
+  res.json(result);
+});
+
+app.post('/api/courses/:id/enroll', (req, res) => {
+  const userId = (req.body.userId || req.headers['x-user-id'] || 'APX-9942') as string;
+  const result = db.enrollUserInCourse(userId, req.params.id);
+  io.emit('course:enrolled', { userId, courseId: req.params.id });
+  res.json(result);
+});
+
+app.post('/api/courses/:id/progress', (req, res) => {
+  const userId = (req.body.userId || req.headers['x-user-id'] || 'APX-9942') as string;
+  const { lessonId, positionSec, completed } = req.body;
+  const result = db.updateCourseProgress(userId, req.params.id, lessonId, positionSec, completed);
+  res.json(result);
+});
+
+app.get('/api/courses-progress', (req, res) => {
+  const userId = (req.query.userId || req.headers['x-user-id'] || 'APX-9942') as string;
+  const progressMap = db.getUserCoursesProgress(userId);
+  res.json({ success: true, progress: progressMap });
 });
 
 // 22. Complete State endpoint (for instant hydration)
@@ -678,6 +763,8 @@ app.get('/api/state', (req, res) => {
     communityAthletes: db.getCommunityAthletesMap(viewerId),
     scans: dbState.scans,
     fixtures: dbState.fixtures,
+    sessions: dbState.sessions || [],
+    courses: dbState.courses || [],
     posts: db.getPosts(viewerId),
     stories: dbState.stories,
     notifications: db.getNotifications(viewerId),
@@ -708,6 +795,8 @@ io.on('connection', (socket) => {
     communityAthletes: db.getCommunityAthletesMap('APX-9942'),
     scans: dbState.scans,
     fixtures: dbState.fixtures,
+    sessions: dbState.sessions || [],
+    courses: dbState.courses || [],
     posts: db.getPosts('APX-9942'),
     stories: dbState.stories,
     notifications: db.getNotifications('APX-9942'),
@@ -715,6 +804,18 @@ io.on('connection', (socket) => {
     liveTelemetry,
     onlineCount: connectedClientsCount,
     serverTime: Date.now(),
+  });
+
+  // Create / Log Training Session
+  socket.on('session:create', (sessionData: any) => {
+    try {
+      const result = db.addSession(sessionData);
+      io.emit('session:created', result.session);
+      if (result.athlete) {
+        io.emit('athlete:updated', result.athlete);
+        io.emit('community:updated', db.getCommunityAthletesMap());
+      }
+    } catch (e) {}
   });
 
   // Toggle Live Workout Session

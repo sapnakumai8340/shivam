@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { UserRole, ActiveScreen, BiomechanicalScan, HighlightVideo, TapeAnalysis, FixtureSchedule, AthleteProfile, AdminDecision, SocialPost, PlayerStory, SocialComment, PlayerManagementProfile, FeePaymentRecord, EquipmentInventoryItem, SessionRecord } from './types';
+import { UserRole, ActiveScreen, BiomechanicalScan, HighlightVideo, TapeAnalysis, FixtureSchedule, AthleteProfile, AdminDecision, SocialPost, PlayerStory, SocialComment, PlayerManagementProfile, FeePaymentRecord, EquipmentInventoryItem, SessionRecord, LoginActivity } from './types';
 import { getInitialRealtimeState, persistRealtimeState, LiveTelemetrySnapshot } from './utils/realtimeStore';
 import { socketService } from './utils/socketService';
 import { apiService } from './utils/apiService';
@@ -14,8 +14,8 @@ import { SchedulingView } from './components/SchedulingView';
 import { RecordsView } from './components/RecordsView';
 import { ChatbotView } from './components/ChatbotView';
 import { ManagementView } from './components/ManagementView';
+import { CoursesView } from './components/CoursesView';
 import { ScreenSwitcher } from './components/ScreenSwitcher';
-import { INITIAL_MANAGEMENT_PLAYERS, INITIAL_FEE_PAYMENTS, INITIAL_EQUIPMENT_INVENTORY } from './data/mockManagementData';
 
 // Modals
 import { LoginModal, UserAuthData } from './components/LoginModal';
@@ -30,6 +30,7 @@ import { AdminPerformanceModal } from './components/AdminPerformanceModal';
 import { CreatePostModal } from './components/CreatePostModal';
 import { PlayerProfileModal } from './components/PlayerProfileModal';
 import { StoryViewerModal } from './components/StoryViewerModal';
+import { PlayerScannerModal } from './components/PlayerScannerModal';
 
 export default function App() {
   // Initialize State from local store fallback
@@ -50,32 +51,33 @@ export default function App() {
   const [fixtures, setFixtures] = useState<FixtureSchedule[]>(initialData.fixtures);
   const [communityAthletes, setCommunityAthletes] = useState<Record<string, AthleteProfile>>(initialData.communityAthletes);
   const [sessions, setSessions] = useState<SessionRecord[]>([]);
+  const [loginActivities, setLoginActivities] = useState<LoginActivity[]>([]);
 
   // Academy & Club Management System State
   const [mgmtPlayers, setMgmtPlayers] = useState<PlayerManagementProfile[]>(() => {
     try {
       const raw = localStorage.getItem('apex_mgmt_players_v4');
-      return raw ? JSON.parse(raw) : INITIAL_MANAGEMENT_PLAYERS;
+      return raw ? JSON.parse(raw) : [];
     } catch (e) {
-      return INITIAL_MANAGEMENT_PLAYERS;
+      return [];
     }
   });
 
   const [mgmtFeeRecords, setMgmtFeeRecords] = useState<FeePaymentRecord[]>(() => {
     try {
       const raw = localStorage.getItem('apex_mgmt_fees_v4');
-      return raw ? JSON.parse(raw) : INITIAL_FEE_PAYMENTS;
+      return raw ? JSON.parse(raw) : [];
     } catch (e) {
-      return INITIAL_FEE_PAYMENTS;
+      return [];
     }
   });
 
   const [mgmtInventory, setMgmtInventory] = useState<EquipmentInventoryItem[]>(() => {
     try {
       const raw = localStorage.getItem('apex_mgmt_inventory_v4');
-      return raw ? JSON.parse(raw) : INITIAL_EQUIPMENT_INVENTORY;
+      return raw ? JSON.parse(raw) : [];
     } catch (e) {
-      return INITIAL_EQUIPMENT_INVENTORY;
+      return [];
     }
   });
 
@@ -99,23 +101,23 @@ export default function App() {
 
   // Live Biometric Telemetry Stream (from Socket.IO)
   const [telemetry, setTelemetry] = useState<LiveTelemetrySnapshot>({
-    heartRate: 148,
+    heartRate: 0,
     heartRateTrend: 'stable',
-    currentSpeed: 32.4,
-    speedDelta: 0.8,
-    cadenceRpm: 184,
-    pitchX: 68,
-    pitchY: 42,
-    hrvMs: 76,
-    groundForceLeft: 1240,
-    groundForceRight: 1265,
-    bilateralSymmetry: 96,
-    kneeTorqueNm: 184,
-    activeSessionDurationSec: 2530,
-    isSessionActive: true,
-    intensityZone: 'Threshold (Z4)',
-    acwrLive: 1.14,
-    fatigueIndex: 18,
+    currentSpeed: 0,
+    speedDelta: 0,
+    cadenceRpm: 0,
+    pitchX: 50,
+    pitchY: 50,
+    hrvMs: 0,
+    groundForceLeft: 0,
+    groundForceRight: 0,
+    bilateralSymmetry: 0,
+    kneeTorqueNm: 0,
+    activeSessionDurationSec: 0,
+    isSessionActive: false,
+    intensityZone: 'Recovery (Z1)',
+    acwrLive: 0,
+    fatigueIndex: 0,
   });
 
   // Socket.IO Full-Duplex Real-Time Stream Synchronization
@@ -232,20 +234,49 @@ export default function App() {
   }, []);
 
   const handleLogSession = useCallback(async (sessionData: any) => {
-    socketService.emit('session:create', sessionData);
-    const res = await apiService.logSession(sessionData);
-    if (res.success && res.session) {
-      setSessions((prev) => [res.session, ...prev.filter((s) => s.id !== res.session.id)]);
-      if (res.athlete) {
-        setAthlete(res.athlete);
-        setCommunityAthletes((prev) => ({ ...prev, [res.athlete.id]: res.athlete }));
+    const tempId = sessionData.id || `sess-${Date.now()}`;
+    const optimisticSession: SessionRecord = {
+      id: tempId,
+      athleteId: sessionData.athleteId || athlete.id,
+      athleteName: sessionData.athleteName || athlete.name,
+      sessionType: sessionData.sessionType || 'TRAINING',
+      title: sessionData.title,
+      date: sessionData.date || new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+      timestamp: Date.now(),
+      durationMinutes: Number(sessionData.durationMinutes) || 45,
+      topSpeedKmh: sessionData.topSpeedKmh,
+      distanceKm: sessionData.distanceKm,
+      notes: sessionData.notes,
+    } as any;
+
+    // 1. Immediate local update
+    setSessions((prev) => [optimisticSession, ...prev.filter((s) => s.id !== tempId)]);
+
+    // 2. Socket.io broadcast
+    socketService.emit('session:create', { ...sessionData, id: tempId });
+
+    // 3. REST API persistent save
+    try {
+      const res = await apiService.logSession({ ...sessionData, id: tempId });
+      if (res.success && res.session) {
+        setSessions((prev) => [res.session, ...prev.filter((s) => s.id !== tempId && s.id !== res.session.id)]);
+        if (res.athlete) {
+          setAthlete(res.athlete);
+          setCommunityAthletes((prev) => ({ ...prev, [res.athlete.id]: res.athlete }));
+        }
       }
+    } catch (err) {
+      console.error('Failed to persist session to server:', err);
     }
-  }, []);
+  }, [athlete]);
+
+  // Authentication Gate: show login/signup page until user is authenticated
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // Modals Visibility State
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isScanOpen, setIsScanOpen] = useState(false);
+  const [isPlayerScannerOpen, setIsPlayerScannerOpen] = useState(false);
   const [selectedScanDetail, setSelectedScanDetail] = useState<BiomechanicalScan | null>(null);
   const [isFullReportOpen, setIsFullReportOpen] = useState(false);
   const [activeVideoItem, setActiveVideoItem] = useState<HighlightVideo | TapeAnalysis | null>(null);
@@ -287,10 +318,10 @@ export default function App() {
 
   // Role Switcher Handler (Enforce Auth for Admin Access)
   const handleToggleRole = (requestedRole?: UserRole) => {
-    const nextRole = requestedRole || (role === 'player' ? 'admin' : 'player');
+    const nextRole = requestedRole || (role === 'player' ? 'coach' : 'player');
 
-    // Protect Admin role access: player cannot access admin mode without Coach/Staff credentials
-    if (nextRole === 'admin' && role === 'player') {
+    // Protect Admin and Coach role access
+    if ((nextRole === 'admin' || nextRole === 'coach') && role === 'player') {
       const isCoachProfile =
         athlete.position === 'STAFF' ||
         athlete.role?.toLowerCase().includes('coach') ||
@@ -346,9 +377,26 @@ export default function App() {
   };
 
   // Login & Registration Success Handler
-  const handleLoginSuccess = (newRole: UserRole, userEmail: string, authData?: UserAuthData, userProfile?: AthleteProfile) => {
+  const handleLoginSuccess = (newRole: UserRole, userEmail: string, authData?: UserAuthData, userProfile?: AthleteProfile, isNewUser?: boolean) => {
     setRole(newRole);
+    setIsAuthenticated(true);
     setIsLoginOpen(false);
+
+    // Track login/signup activity for admin
+    const profileForActivity = userProfile || authData?.user;
+    const isSignup = isNewUser || (authData as any)?.isNewUser || false;
+    const activityEntry: LoginActivity = {
+      id: `act-${Date.now()}`,
+      playerId: profileForActivity?.id || `USR-${Date.now()}`,
+      playerName: profileForActivity?.name || authData?.name || userEmail.split('@')[0] || 'Unknown Player',
+      playerAvatar: profileForActivity?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80',
+      playerPosition: profileForActivity?.position || (authData as any)?.position || 'Player',
+      playerNumber: profileForActivity?.number || (authData as any)?.jerseyNumber || 0,
+      type: isSignup ? 'SIGNUP' : 'LOGIN',
+      timestamp: Date.now(),
+      role: newRole,
+    };
+    setLoginActivities((prev) => [activityEntry, ...prev.slice(0, 49)]);
 
     const targetProfile = userProfile || authData?.user;
     if (targetProfile) {
@@ -445,6 +493,7 @@ export default function App() {
     }
 
     setActiveScreen('home');
+    setIsAuthenticated(true);
   };
 
   // Social Feed Handlers
@@ -719,6 +768,20 @@ export default function App() {
 
   const selectedAthleteForProfile = selectedPlayerId ? communityAthletes[selectedPlayerId] || athlete : null;
 
+  // If not authenticated, show full-page Login/Signup screen
+  if (!isAuthenticated) {
+    return (
+      <LoginModal
+        isOpen={true}
+        onClose={() => {}} // No close allowed on auth gate
+        onLoginSuccess={handleLoginSuccess}
+        initialRole={role}
+        initialMode="signup"
+        isAuthGate={true}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#070b0f] text-slate-100 font-sans selection:bg-[#ff5500] selection:text-white flex flex-col justify-between">
       {/* Top Quick Navigation Bar */}
@@ -731,6 +794,7 @@ export default function App() {
         onOpenScan={() => setIsScanOpen(true)}
         onOpenReport={() => setIsFullReportOpen(true)}
         onOpenUploadTape={() => setIsUploadTapeOpen(true)}
+        onOpenPlayerScanner={() => setIsPlayerScannerOpen(true)}
       />
 
       {/* Global Header */}
@@ -756,7 +820,10 @@ export default function App() {
             onNavigateToPerformance={() => setActiveScreen('performance')}
             onNavigateToSchedule={() => setActiveScreen('schedule')}
             onNavigateToProfile={() => setActiveScreen('profile')}
+            onNavigateToFeed={() => setActiveScreen('feed')}
+            onNavigateToChatbot={() => setActiveScreen('chatbot')}
             onNavigateToManagement={() => setActiveScreen('management')}
+            onNavigateToCourses={() => setActiveScreen('courses')}
             onOpenEditProfile={() => setIsEditProfileOpen(true)}
             onPlayVideo={(video) => setActiveVideoItem(video)}
             onSelectScan={(scan) => setSelectedScanDetail(scan)}
@@ -773,10 +840,13 @@ export default function App() {
             scans={scans}
             fixtures={fixtures}
             sessions={sessions}
+            posts={posts}
+            loginActivities={loginActivities}
             onLogSession={handleLogSession}
             onToggleSession={toggleSession}
             onOpenScan={() => setIsScanOpen(true)}
             onOpenUploadTape={() => setIsUploadTapeOpen(true)}
+            onOpenPlayerProfile={(playerId) => setSelectedPlayerId(playerId)}
           />
         )}
 
@@ -830,7 +900,7 @@ export default function App() {
             fixtures={fixtures}
             role={role}
             onNewFixture={() => {
-              if (role === 'admin' || athlete.position === 'STAFF') {
+              if (role === 'admin' || role === 'coach' || athlete.position === 'STAFF') {
                 setIsScheduleModalOpen(true);
               } else {
                 setIsLoginOpen(true);
@@ -865,6 +935,14 @@ export default function App() {
             onUpdatePlayers={setMgmtPlayers}
             onUpdateFeeRecords={setMgmtFeeRecords}
             onUpdateInventory={setMgmtInventory}
+            onOpenLogin={() => setIsLoginOpen(true)}
+          />
+        )}
+
+        {activeScreen === 'courses' && (
+          <CoursesView
+            role={role}
+            athlete={athlete}
             onOpenLogin={() => setIsLoginOpen(true)}
           />
         )}
@@ -992,6 +1070,17 @@ export default function App() {
           onClose={() => setActiveStoryIndex(null)}
         />
       )}
+
+      {/* 13. Player Profile Scanner Modal */}
+      <PlayerScannerModal
+        isOpen={isPlayerScannerOpen}
+        onClose={() => setIsPlayerScannerOpen(false)}
+        communityAthletes={communityAthletes}
+        onOpenPlayerProfile={(playerId) => {
+          setSelectedPlayerId(playerId);
+          setIsPlayerScannerOpen(false);
+        }}
+      />
     </div>
   );
 }

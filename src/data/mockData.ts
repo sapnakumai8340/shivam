@@ -2,8 +2,8 @@ import { AthleteProfile, BiomechanicalScan, FixtureSchedule, ChatMessage, Social
 
 export const CURRENT_ATHLETE: AthleteProfile = {
   id: 'APX-9942',
-  name: 'MARCUS RUSH',
-  avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80',
+  name: 'RAHUL KUMAR',
+  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80',
   actionImage: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=80',
   code: '#APX-9942',
   position: 'FWD',
@@ -13,12 +13,12 @@ export const CURRENT_ATHLETE: AthleteProfile = {
   status: 'ACTIVE',
   overallRating: 94.2,
   ratingChange: 2.1,
-  height: "186 cm / 6'1\"",
-  weight: '82 kg / 181 lbs',
+  height: "182 cm / 6'0\"",
+  weight: '76 kg / 167 lbs',
   preferredFoot: 'Right',
-  age: 23,
+  age: 22,
   club: 'Apex Premier Squad',
-  handle: '@marcusrush_9',
+  handle: '@rahulkumar',
   followersCount: 14280,
   followingCount: 384,
   postsCount: 28,
@@ -122,7 +122,7 @@ export const CURRENT_ATHLETE: AthleteProfile = {
       videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
       dateAdded: 'Oct 14, 2023',
       views: '14.2k',
-      description: 'Breakdown of Marcus Rush 3 explosive goals and positional runs against Metro City FC defense line.'
+      description: 'Breakdown of Rahul Kumar 3 explosive goals and positional runs against Metro City FC defense line.'
     },
     {
       id: 'h2',
@@ -157,7 +157,7 @@ export const CURRENT_ATHLETE: AthleteProfile = {
       videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
       dateAdded: 'Added Oct 13',
       fileSize: '480 MB',
-      playerHighlight: 'Marcus Johnson #88 WR / Rush #9',
+      playerHighlight: 'Rahul Kumar #9',
       keyInsights: [
         'Explosive off-the-ball cut at 0:42 created 3.4m separation.',
         'Maximum deceleration rate reached 6.2 m/s² with optimal knee alignment.',
@@ -173,7 +173,7 @@ export const CURRENT_ATHLETE: AthleteProfile = {
       videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyBlazes.mp4',
       dateAdded: 'Added Oct 10',
       fileSize: '210 MB',
-      playerHighlight: 'Marcus Rush #9',
+      playerHighlight: 'Rahul Kumar #9',
       keyInsights: [
         'Lateral cone transition time improved by 110ms over previous block.',
         'Ground reaction symmetry maintained at 48L / 52R balance.'
@@ -185,7 +185,7 @@ export const CURRENT_ATHLETE: AthleteProfile = {
 export const RECENT_SCANS: BiomechanicalScan[] = [
   {
     id: 's1',
-    athleteName: 'MARCUS J.',
+    athleteName: 'RAHUL K.',
     athleteId: 'APX-9942',
     scanDate: 'Oct 24, 2023',
     scanType: 'LOWER BODY',
@@ -288,7 +288,7 @@ export const UPCOMING_FIXTURES: FixtureSchedule[] = [
     ],
     refereeOfficial: 'M. Oliver (FIFA Int.)',
     assignedLineup: [
-      { playerId: 'APX-9942', playerName: 'Marcus Rush', position: 'ST (#9)', number: 9, role: 'Starter', readiness: 98, status: 'Confirmed' },
+      { playerId: 'APX-9942', playerName: 'Rahul Kumar', position: 'ST (#9)', number: 9, role: 'Starter', readiness: 98, status: 'Confirmed' },
       { playerId: 'APX-8831', playerName: 'Sarah Vance', position: 'LW (#11)', number: 11, role: 'Starter', readiness: 94, status: 'Confirmed' },
       { playerId: 'APX-7710', playerName: 'Elena Voss', position: 'RW (#7)', number: 7, role: 'Starter', readiness: 97, status: 'Confirmed' },
       { playerId: 'APX-6604', playerName: 'David Sterling', position: 'CAM (#10)', number: 10, role: 'Starter', readiness: 92, status: 'Confirmed' },
@@ -325,7 +325,7 @@ export const UPCOMING_FIXTURES: FixtureSchedule[] = [
     ],
     refereeOfficial: 'Crew Chief T. Brothers',
     assignedLineup: [
-      { playerId: 'APX-9942', playerName: 'Marcus Rush', position: 'Point Guard (#1 PG)', number: 1, role: 'Starter', readiness: 96, status: 'Confirmed' },
+      { playerId: 'APX-9942', playerName: 'Rahul Kumar', position: 'Point Guard (#1 PG)', number: 1, role: 'Starter', readiness: 96, status: 'Confirmed' },
       { playerId: 'APX-7710', playerName: 'Elena Voss', position: 'Shooting Guard (#2 SG)', number: 2, role: 'Starter', readiness: 97, status: 'Confirmed' },
       { playerId: 'APX-8831', playerName: 'Sarah Vance', position: 'Small Forward (#3 SF)', number: 3, role: 'Starter', readiness: 93, status: 'Confirmed' },
       { playerId: 'APX-6604', playerName: 'David Sterling', position: 'Power Forward (#4 PF)', number: 4, role: 'Starter', readiness: 91, status: 'Confirmed' },
@@ -356,7 +356,7 @@ export const UPCOMING_FIXTURES: FixtureSchedule[] = [
     ],
     refereeOfficial: 'R. Kettleborough (ICC)',
     assignedLineup: [
-      { playerId: 'APX-9942', playerName: 'Marcus Rush', position: 'Opening Batsman (Capt)', number: 9, role: 'Starter', readiness: 98, status: 'Confirmed' },
+      { playerId: 'APX-9942', playerName: 'Rahul Kumar', position: 'Opening Batsman (Capt)', number: 9, role: 'Starter', readiness: 98, status: 'Confirmed' },
       { playerId: 'APX-7710', playerName: 'Elena Voss', position: 'Opening Bowler (Pace)', number: 7, role: 'Starter', readiness: 96, status: 'Confirmed' },
       { playerId: 'APX-8831', playerName: 'Sarah Vance', position: 'Wicketkeeper Batsman', number: 11, role: 'Starter', readiness: 94, status: 'Confirmed' },
       { playerId: 'APX-6604', playerName: 'David Sterling', position: 'Top Order #3', number: 10, role: 'Starter', readiness: 90, status: 'Confirmed' },
@@ -388,7 +388,7 @@ export const UPCOMING_FIXTURES: FixtureSchedule[] = [
     ],
     refereeOfficial: 'Eva Asderaki (Gold Badge)',
     assignedLineup: [
-      { playerId: 'APX-9942', playerName: 'Marcus Rush', position: 'Main Draw Singles #1', number: 1, role: 'Starter', readiness: 98, status: 'Confirmed' },
+      { playerId: 'APX-9942', playerName: 'Rahul Kumar', position: 'Main Draw Singles #1', number: 1, role: 'Starter', readiness: 98, status: 'Confirmed' },
       { playerId: 'APX-7710', playerName: 'Elena Voss', position: 'Hitting Partner / Coach', number: 2, role: 'Substitute', readiness: 95, status: 'Confirmed' },
     ]
   },
@@ -416,7 +416,7 @@ export const UPCOMING_FIXTURES: FixtureSchedule[] = [
     ],
     refereeOfficial: 'N. Owens (WR Referee)',
     assignedLineup: [
-      { playerId: 'APX-9942', playerName: 'Marcus Rush', position: 'Fly-Half (#10)', number: 10, role: 'Starter', readiness: 97, status: 'Confirmed' },
+      { playerId: 'APX-9942', playerName: 'Rahul Kumar', position: 'Fly-Half (#10)', number: 10, role: 'Starter', readiness: 97, status: 'Confirmed' },
       { playerId: 'APX-8831', playerName: 'Sarah Vance', position: 'Winger (#11)', number: 11, role: 'Starter', readiness: 93, status: 'Confirmed' },
       { playerId: 'APX-2209', playerName: 'Leo Kante', position: 'Number 8 Lock (#8)', number: 8, role: 'Starter', readiness: 95, status: 'Confirmed' },
       { playerId: 'APX-4421', playerName: 'Tariq Al-Mansoor', position: 'Inside Centre (#12)', number: 12, role: 'Starter', readiness: 92, status: 'Confirmed' },
@@ -446,7 +446,7 @@ export const UPCOMING_FIXTURES: FixtureSchedule[] = [
     ],
     refereeOfficial: 'World Athletics Starter Jury',
     assignedLineup: [
-      { playerId: 'APX-9942', playerName: 'Marcus Rush', position: 'Anchor Leg 4 (Sprint)', number: 4, role: 'Starter', readiness: 99, status: 'Confirmed' },
+      { playerId: 'APX-9942', playerName: 'Rahul Kumar', position: 'Anchor Leg 4 (Sprint)', number: 4, role: 'Starter', readiness: 99, status: 'Confirmed' },
       { playerId: 'APX-7710', playerName: 'Elena Voss', position: 'Bend Leg 3 (Curve)', number: 3, role: 'Starter', readiness: 98, status: 'Confirmed' },
       { playerId: 'APX-8831', playerName: 'Sarah Vance', position: 'Straightaway Leg 2', number: 2, role: 'Starter', readiness: 95, status: 'Confirmed' },
       { playerId: 'APX-3310', playerName: 'Lucas Walker', position: 'Block Start Leg 1', number: 1, role: 'Starter', readiness: 92, status: 'Confirmed' },
@@ -470,7 +470,7 @@ export const INITIAL_CHAT_MESSAGES: ChatMessage[] = [
   {
     id: 'msg-3',
     sender: 'apex',
-    text: "Here are the players showing the highest fatigue indicators in Q4 based on GPS telemetry and force plate sensors:\n\n1. **#11 Sarah Vance (LW)** - 8.4% velocity drop (Peak 32.1 -> 29.4 km/h) • High quad deceleration strain.\n2. **#3 Lucas Walker (LB)** - 7.1% velocity drop (Peak 30.8 -> 28.6 km/h) • Recommended active recovery.\n3. **#8 Mateo Silva (CM)** - 6.8% velocity drop • Ground reaction asymmetry increased to 45L / 55R.\n\n*Marcus Rush (#9)* maintained 97% sprint output with zero biomechanical deficit.",
+    text: "Here are the players showing the highest fatigue indicators in Q4 based on GPS telemetry and force plate sensors:\n\n1. **#11 Sarah Vance (LW)** - 8.4% velocity drop (Peak 32.1 -> 29.4 km/h) • High quad deceleration strain.\n2. **#3 Lucas Walker (LB)** - 7.1% velocity drop (Peak 30.8 -> 28.6 km/h) • Recommended active recovery.\n3. **#8 Mateo Silva (CM)** - 6.8% velocity drop • Ground reaction asymmetry increased to 45L / 55R.\n\n*Rahul Kumar (#9)* maintained 97% sprint output with zero biomechanical deficit.",
     timestamp: 'TODAY, 08:32 AM',
     metricsData: {
       title: 'Q4 Velocity & Fatigue Breakdown',
@@ -478,7 +478,7 @@ export const INITIAL_CHAT_MESSAGES: ChatMessage[] = [
         { label: 'Sarah Vance #11', value: '-8.4%', delta: 'High Quad Strain', status: 'warning' },
         { label: 'Lucas Walker #3', value: '-7.1%', delta: 'Deload Prescribed', status: 'warning' },
         { label: 'Mateo Silva #8', value: '-6.8%', delta: '45L/55R Asymmetry', status: 'warning' },
-        { label: 'Marcus Rush #9', value: '-0.8%', delta: 'Peak Condition', status: 'good' },
+        { label: 'Rahul Kumar #9', value: '-0.8%', delta: 'Peak Condition', status: 'good' },
       ]
     },
     actions: [
@@ -532,7 +532,7 @@ export interface SquadPlayerTelemetry {
 }
 
 export const SQUAD_TELEMETRY_ROSTER: SquadPlayerTelemetry[] = [
-  { id: 'APX-9942', name: 'Marcus Rush', position: 'FWD (ST)', jersey: 9, topSpeed: 34.8, sprintDistanceM: 840, totalDistanceKm: 11.4, acwr: 1.15, symmetryPct: 95, readinessScore: 97, injuryRiskScore: 12, riskCategory: 'LOW', jointStrain: 'NORMAL', status: 'ACTIVE' },
+  { id: 'APX-9942', name: 'Rahul Kumar', position: 'FWD (ST)', jersey: 9, topSpeed: 34.8, sprintDistanceM: 840, totalDistanceKm: 11.4, acwr: 1.15, symmetryPct: 95, readinessScore: 97, injuryRiskScore: 12, riskCategory: 'LOW', jointStrain: 'NORMAL', status: 'ACTIVE' },
   { id: 'APX-8831', name: 'Sarah Vance', position: 'FWD (LW)', jersey: 11, topSpeed: 33.2, sprintDistanceM: 920, totalDistanceKm: 11.9, acwr: 1.38, symmetryPct: 91, readinessScore: 84, injuryRiskScore: 38, riskCategory: 'MODERATE', jointStrain: 'HAMSTRING ALERT', status: 'ACTIVE' },
   { id: 'APX-7710', name: 'Elena Voss', position: 'FWD (RW)', jersey: 7, topSpeed: 34.1, sprintDistanceM: 880, totalDistanceKm: 10.8, acwr: 1.18, symmetryPct: 97, readinessScore: 95, injuryRiskScore: 15, riskCategory: 'LOW', jointStrain: 'NORMAL', status: 'ACTIVE' },
   { id: 'APX-6604', name: 'David Sterling', position: 'MID (CAM)', jersey: 10, topSpeed: 31.8, sprintDistanceM: 680, totalDistanceKm: 12.6, acwr: 1.22, symmetryPct: 93, readinessScore: 91, injuryRiskScore: 22, riskCategory: 'LOW', jointStrain: 'NORMAL', status: 'ACTIVE' },
@@ -599,8 +599,8 @@ export const INITIAL_STORIES: PlayerStory[] = [
     id: 'story-user',
     playerId: 'APX-9942',
     playerName: 'Your Story',
-    playerAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80',
-    playerHandle: '@marcusrush_9',
+    playerAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80',
+    playerHandle: '@rahulkumar',
     hasUnseen: false,
     stories: [
       {
@@ -696,9 +696,9 @@ export const INITIAL_SOCIAL_POSTS: SocialPost[] = [
   {
     id: 'post-1',
     authorId: 'APX-9942',
-    authorName: 'Marcus Rush',
-    authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80',
-    authorHandle: '@marcusrush_9',
+    authorName: 'Rahul Kumar',
+    authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80',
+    authorHandle: '@rahulkumar',
     authorClub: 'Apex Premier Squad',
     authorPosition: 'Striker (#9)',
     authorNumber: 9,
@@ -809,9 +809,9 @@ export const INITIAL_SOCIAL_POSTS: SocialPost[] = [
       {
         id: 'c4',
         authorId: 'APX-9942',
-        authorName: 'Marcus Rush',
-        authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80',
-        authorHandle: '@marcusrush_9',
+        authorName: 'Rahul Kumar',
+        authorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80',
+        authorHandle: '@rahulkumar',
         text: 'Top corner every single time! Untouchable 🚀',
         timestamp: '1h ago',
         createdAt: Date.now() - 1000 * 60 * 60,

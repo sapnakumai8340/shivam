@@ -1,48 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
-  Flame, 
-  Upload, 
-  Scan, 
-  BarChart3, 
-  Calendar, 
-  Play, 
   Sparkles, 
-  CheckCircle2, 
-  ChevronRight, 
   Activity, 
+  Rss, 
+  Bot, 
+  Calendar, 
+  User, 
+  CreditCard, 
+  ArrowRight, 
+  Trophy, 
   Zap, 
   ShieldCheck, 
-  Clock, 
-  ArrowUpRight, 
-  Film,
+  Flame, 
+  Plus, 
+  Upload, 
+  Shield, 
+  CheckCircle2,
+  ChevronRight,
   TrendingUp,
-  Heart,
-  Gauge,
-  Lock,
-  Mail,
-  User,
-  Shield,
   Award,
-  Hash,
-  Eye,
-  EyeOff,
-  AlertCircle,
-  Trophy,
-  Target,
-  Dna,
-  Edit3,
-  UserCheck,
-  Settings
+  Users,
+  GraduationCap
 } from 'lucide-react';
 import { AthleteProfile, BiomechanicalScan, HighlightVideo, TapeAnalysis, UserRole } from '../types';
 import { UserAuthData } from './LoginModal';
-import { LiveTelemetryWidget } from './LiveTelemetryWidget';
-import { LiveTelemetrySnapshot } from '../utils/realtimeStore';
 
 interface HomeViewProps {
   athlete: AthleteProfile;
   role: UserRole;
-  telemetry?: LiveTelemetrySnapshot;
+  telemetry?: any;
   onToggleSession?: () => void;
   scans?: BiomechanicalScan[];
   onOpenUploadTape: () => void;
@@ -50,7 +36,10 @@ interface HomeViewProps {
   onNavigateToPerformance: () => void;
   onNavigateToSchedule: () => void;
   onNavigateToProfile: () => void;
+  onNavigateToFeed?: () => void;
+  onNavigateToChatbot?: () => void;
   onNavigateToManagement?: () => void;
+  onNavigateToCourses?: () => void;
   onOpenEditProfile?: () => void;
   onPlayVideo: (item: HighlightVideo | TapeAnalysis) => void;
   onSelectScan: (scan: BiomechanicalScan) => void;
@@ -60,281 +49,307 @@ interface HomeViewProps {
 export const HomeView: React.FC<HomeViewProps> = ({
   athlete,
   role,
-  telemetry,
-  onToggleSession,
-  scans,
   onOpenUploadTape,
   onOpenScan,
   onNavigateToPerformance,
   onNavigateToSchedule,
   onNavigateToProfile,
+  onNavigateToFeed,
+  onNavigateToChatbot,
   onNavigateToManagement,
+  onNavigateToCourses,
   onOpenEditProfile,
-  onPlayVideo,
-  onSelectScan,
-  onLoginSuccess,
 }) => {
+  const roleTitle = role === 'admin' ? 'Club Administrator' : role === 'coach' ? 'Head Coach & Tactician' : 'Athlete / Player';
+  const roleBadgeColor = role === 'admin' ? 'bg-indigo-600 text-white' : role === 'coach' ? 'bg-blue-600 text-white' : 'bg-[#ff5500] text-white';
+
   return (
-    <div className="min-h-screen bg-[#070b0f] text-slate-100 pb-28 pt-2 px-3.5 sm:px-4 max-w-md mx-auto space-y-4">
+    <div className="min-h-screen bg-[#070b0f] text-slate-100 pb-28 pt-2 px-3.5 sm:px-6 max-w-4xl mx-auto space-y-6 animate-in fade-in duration-300">
       
-      {/* 1. DYNAMIC USER / ATHLETE PROFILE CARD */}
-      <div className="bg-gradient-to-br from-[#121922] via-[#0e141c] to-[#080d12] border border-slate-800/90 rounded-3xl p-4 sm:p-5 shadow-2xl relative overflow-hidden">
-        {/* Subtle accent glow */}
-        <div className="absolute top-0 right-0 w-36 h-36 bg-[#ff5500]/10 rounded-full blur-2xl pointer-events-none" />
+      {/* 1. HERO SPLASH HEADER BANNER */}
+      <div className="relative bg-gradient-to-br from-[#151c24] via-[#0e141c] to-[#080d12] border border-slate-800/90 rounded-3xl p-6 sm:p-8 shadow-2xl overflow-hidden text-center">
+        {/* Ambient Stadium Glows */}
+        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#ff5500]/15 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute -bottom-20 right-0 w-64 h-64 bg-indigo-600/10 rounded-full blur-[90px] pointer-events-none" />
+        
+        {/* Brand Tagline & Logo */}
+        <div className="relative z-10 flex flex-col items-center">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#ff5500]/15 border border-[#ff5500]/30 text-[#ff5500] text-[11px] font-black uppercase tracking-widest mb-3 shadow-[0_0_15px_rgba(255,85,0,0.2)]">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>KHELTANTRA SPORTS PLATFORM</span>
+          </div>
 
-        <div className="flex items-center justify-between mb-3.5 relative z-10">
-          <div className="flex items-center gap-3">
-            <div 
-              className="relative cursor-pointer group" 
-              onClick={onOpenEditProfile || onNavigateToProfile}
-              title="Click to customize profile avatar and details"
-            >
-              <div className="w-14 h-14 rounded-2xl border-2 border-[#ff5500] overflow-hidden bg-slate-900 shadow-lg group-hover:scale-105 transition-transform">
-                <img
-                  src={athlete.avatar}
-                  alt={athlete.name}
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-              <span className="absolute -bottom-1 -right-1 bg-[#ff5500] text-white text-[9px] font-black px-1.5 py-0.2 rounded-md uppercase font-mono shadow">
-                #{athlete.number}
+          <h1 className="text-3xl sm:text-5xl font-black italic tracking-wide text-white uppercase drop-shadow-[0_2px_15px_rgba(255,85,0,0.3)]">
+            APEX <span className="text-[#ff5500]">ELITE</span>
+          </h1>
+          
+          <p className="text-xs sm:text-sm font-semibold text-slate-300 max-w-lg mx-auto mt-2 leading-relaxed">
+            The Authoritative Multi-Sport Performance, Community Feed & Tactical Intelligence Network.
+          </p>
+
+          {/* Sports Supported Badges */}
+          <div className="flex items-center justify-center gap-2 mt-4 flex-wrap text-xs font-bold text-slate-300">
+            <span className="px-3 py-1 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-1.5 shadow-sm">
+              ⚽ <span>Football</span>
+            </span>
+            <span className="px-3 py-1 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-1.5 shadow-sm">
+              🏏 <span>Cricket</span>
+            </span>
+            <span className="px-3 py-1 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-1.5 shadow-sm">
+              🏐 <span>Volleyball</span>
+            </span>
+            <span className="px-3 py-1 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-1.5 shadow-sm">
+              🏀 <span>Basketball</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. AUTHENTICATED USER WELCOME CAPSULE */}
+      <div className="bg-[#0e141c] border border-slate-800/90 rounded-3xl p-4 sm:p-5 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-3.5 w-full sm:w-auto">
+          <div 
+            onClick={onOpenEditProfile || onNavigateToProfile}
+            className="w-14 h-14 rounded-2xl border-2 border-[#ff5500] overflow-hidden bg-slate-900 shadow-md cursor-pointer hover:scale-105 transition-transform shrink-0"
+            title="Edit profile avatar"
+          >
+            <img
+              src={athlete.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=400'}
+              alt={athlete.name}
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+            />
+          </div>
+
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="text-base font-black text-white truncate">{athlete.name}</h2>
+              <span className={`text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider ${roleBadgeColor}`}>
+                {role.toUpperCase()}
               </span>
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 rounded-2xl flex items-center justify-center transition-opacity">
-                <Edit3 className="w-4 h-4 text-white" />
-              </div>
             </div>
+            <p className="text-xs text-slate-400 font-medium truncate">
+              {athlete.position} • {athlete.club || 'Kheltantra FC'}
+            </p>
+            <p className="text-[10px] text-emerald-400 font-mono font-bold mt-0.5">
+              ● Active Database Session
+            </p>
+          </div>
+        </div>
 
+        {/* Action Button to launch Analytics */}
+        <button
+          onClick={onNavigateToPerformance}
+          className="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-[#ff5500] to-[#ff6b2b] hover:from-[#ff4400] text-white font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(255,85,0,0.35)] active:scale-95 transition-all shrink-0"
+        >
+          <span>Enter Dashboard</span>
+          <ArrowRight className="w-4 h-4 stroke-[3]" />
+        </button>
+      </div>
+
+      {/* 3. PLATFORM FEATURE LAUNCHPAD TILES */}
+      <div className="space-y-3">
+        <div className="flex items-center justify-between px-1">
+          <h3 className="text-xs font-black uppercase tracking-wider text-slate-400">
+            Platform Modules & Fast Navigation
+          </h3>
+          <span className="text-[10px] font-mono text-slate-500 font-bold">1-TAP ACCESS</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          {/* Tile 1: Performance Analytics */}
+          <div
+            onClick={onNavigateToPerformance}
+            className="p-5 rounded-3xl bg-[#0e141c] border border-slate-800 hover:border-[#ff5500]/60 hover:bg-slate-800/30 cursor-pointer transition-all shadow-lg group space-y-2.5 relative overflow-hidden"
+          >
+            <div className="w-10 h-10 rounded-2xl bg-[#ff5500]/15 text-[#ff5500] flex items-center justify-center border border-[#ff5500]/30 group-hover:scale-110 transition-transform">
+              <Activity className="w-5 h-5 stroke-[2.5]" />
+            </div>
             <div>
-              <div className="flex items-center gap-1.5 mb-0.5">
-                <span className="text-[10px] font-mono text-[#ff5500] font-black uppercase tracking-wider">
-                  {athlete.position} • {athlete.role}
-                </span>
-                <span className="inline-flex items-center gap-1 text-[8px] font-black px-1.5 py-0.2 rounded-full bg-[#00e5a3]/20 text-[#00e5a3]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#00e5a3] animate-pulse" />
-                  MATCH READY
-                </span>
-              </div>
-              <h2 className="text-lg sm:text-xl font-black text-white uppercase tracking-tight leading-tight flex items-center gap-1.5">
-                <span>{athlete.name}</span>
-              </h2>
-              <p className="text-[11px] text-slate-400 font-medium">
-                {athlete.club || 'Apex Premier Squad'}
+              <h4 className="text-sm font-black text-white group-hover:text-[#ff5500] transition-colors flex items-center justify-between">
+                <span>Performance Analytics</span>
+                <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-white transition-transform group-hover:translate-x-1" />
+              </h4>
+              <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                Real database metrics, training session durations & match stat tracking for all sports.
               </p>
             </div>
           </div>
 
-          <div className="text-right">
-            <div className="text-[9px] font-black uppercase text-slate-400 tracking-wider">APEX INDEX</div>
-            <div className="text-2xl sm:text-3xl font-black text-white tracking-tight font-mono leading-none my-0.5">
-              {athlete.overallRating.toFixed(1)}
-            </div>
-            <div className="text-[9px] text-[#00e5a3] font-bold flex items-center justify-end gap-0.5 font-mono">
-              <TrendingUp className="w-3 h-3" />
-              <span>+{athlete.ratingChange} live</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Quick Customization Button & Role Tag */}
-        <div className="flex items-center justify-between pt-2.5 pb-3 border-t border-slate-800/80 mb-3">
-          <div className="flex items-center gap-2">
-            <span className="text-[9px] font-mono text-slate-400 uppercase">ACTIVE ROLE:</span>
-            <span className="px-2 py-0.5 rounded-md bg-[#ff5500]/15 text-[#ff5500] text-[9px] font-black uppercase tracking-wider border border-[#ff5500]/30">
-              {role === 'admin' ? 'Coach / Director' : 'Athlete Profile'}
-            </span>
-          </div>
-
-          <button
-            onClick={onOpenEditProfile || onNavigateToProfile}
-            className="px-2.5 py-1 rounded-xl bg-slate-800/80 hover:bg-[#ff5500]/20 border border-slate-700 hover:border-[#ff5500] text-slate-200 hover:text-white text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 transition-all active:scale-95"
+          {/* Tile 2: Community Social Feed */}
+          <div
+            onClick={onNavigateToFeed || onNavigateToPerformance}
+            className="p-5 rounded-3xl bg-[#0e141c] border border-slate-800 hover:border-pink-500/60 hover:bg-slate-800/30 cursor-pointer transition-all shadow-lg group space-y-2.5 relative overflow-hidden"
           >
-            <Edit3 className="w-3 h-3 text-[#ff5500]" />
-            <span>Customize Profile</span>
-          </button>
-        </div>
-
-        {/* Key Real-Time Athletic Stats */}
-        <div className="grid grid-cols-4 gap-2 text-center">
-          <div className="bg-[#080d12]/90 rounded-xl p-2 border border-slate-800/70">
-            <div className="text-[8px] font-black text-slate-400 uppercase tracking-wider">MATCHES</div>
-            <div className="text-xs font-black text-white font-mono">{athlete?.stats?.games ?? 0}</div>
-          </div>
-          <div className="bg-[#080d12]/90 rounded-xl p-2 border border-slate-800/70">
-            <div className="text-[8px] font-black text-slate-400 uppercase tracking-wider">GOALS</div>
-            <div className="text-xs font-black text-white font-mono">{athlete?.stats?.goals ?? 0}</div>
-          </div>
-          <div className="bg-[#080d12]/90 rounded-xl p-2 border border-slate-800/70">
-            <div className="text-[8px] font-black text-slate-400 uppercase tracking-wider">SYMMETRY</div>
-            <div className="text-xs font-black text-[#00e5a3] font-mono">{athlete?.stats?.symmetry ?? 95}%</div>
-          </div>
-          <div className="bg-[#080d12]/90 rounded-xl p-2 border border-slate-800/70">
-            <div className="text-[8px] font-black text-slate-400 uppercase tracking-wider">TOP VELOCITY</div>
-            <div className="text-xs font-black text-[#ff5500] font-mono">{athlete?.stats?.topSpeed ?? 32.0} <span className="text-[7px]">km/h</span></div>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. LIVE BIO-SENSOR TELEMETRY STREAM (100 Hz Socket.IO) */}
-      {telemetry && (
-        <LiveTelemetryWidget
-          telemetry={telemetry}
-          onToggleSession={onToggleSession || (() => {})}
-          onOpenScan={onOpenScan}
-        />
-      )}
-
-      {/* 3. PRIMARY ACTION COMMAND HUB */}
-      <div className="grid grid-cols-2 gap-2.5">
-        {/* Upload Match Tape */}
-        <button
-          onClick={onOpenUploadTape}
-          className="group text-left p-3.5 rounded-2xl bg-gradient-to-br from-[#ff5500] to-[#e64400] text-white shadow-lg shadow-[#ff5500]/25 hover:shadow-xl hover:shadow-[#ff5500]/40 transition-all active:scale-95 relative overflow-hidden"
-        >
-          <div className="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center mb-2.5 backdrop-blur-sm group-hover:scale-110 transition-transform">
-            <Upload className="w-4 h-4 stroke-[2.5]" />
-          </div>
-          <div className="text-xs font-black uppercase tracking-tight">Upload Match Tape</div>
-          <div className="text-[10px] text-white/80 mt-0.5">Video telemetry & AI breakdown</div>
-          <ArrowUpRight className="w-4 h-4 absolute top-3.5 right-3.5 opacity-70 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
-        </button>
-
-        {/* Optical Scan */}
-        <button
-          onClick={onOpenScan}
-          className="group text-left p-3.5 rounded-2xl bg-[#121922] border border-slate-800 hover:border-[#ff5500]/50 transition-all active:scale-95 relative overflow-hidden shadow-lg"
-        >
-          <div className="w-8 h-8 rounded-xl bg-[#ff5500]/10 border border-[#ff5500]/30 text-[#ff5500] flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform">
-            <Scan className="w-4 h-4 stroke-[2.5]" />
-          </div>
-          <div className="text-xs font-black text-white uppercase tracking-tight">Biomechanical Scan</div>
-          <div className="text-[10px] text-slate-400 mt-0.5">Joint torque & force angles</div>
-          <ArrowUpRight className="w-4 h-4 text-slate-400 absolute top-3.5 right-3.5 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
-        </button>
-
-        {/* Matchday Schedule */}
-        <button
-          onClick={onNavigateToSchedule}
-          className="group text-left p-3 rounded-2xl bg-[#121922] border border-slate-800 hover:border-blue-500/50 transition-all active:scale-95"
-        >
-          <div className="w-7 h-7 rounded-lg bg-blue-500/10 border border-blue-500/30 text-blue-400 flex items-center justify-center mb-2">
-            <Calendar className="w-3.5 h-3.5 stroke-[2.5]" />
-          </div>
-          <div className="text-xs font-black text-white uppercase tracking-tight">Matchday Hub</div>
-          <div className="text-[10px] text-slate-400">Fixtures & tactical lineup</div>
-        </button>
-
-        {/* Full Performance Lab */}
-        <button
-          onClick={onNavigateToPerformance}
-          className="group text-left p-3 rounded-2xl bg-[#121922] border border-slate-800 hover:border-[#00e5a3]/50 transition-all active:scale-95"
-        >
-          <div className="w-7 h-7 rounded-lg bg-[#00e5a3]/10 border border-[#00e5a3]/30 text-[#00e5a3] flex items-center justify-center mb-2">
-            <BarChart3 className="w-3.5 h-3.5 stroke-[2.5]" />
-          </div>
-          <div className="text-xs font-black text-white uppercase tracking-tight">Performance Lab</div>
-          <div className="text-[10px] text-slate-400">Telemetry & workload matrices</div>
-        </button>
-
-        {/* Admin Academy Management Desk */}
-        {onNavigateToManagement && (
-          <button
-            onClick={onNavigateToManagement}
-            className="group text-left p-3 rounded-2xl bg-[#121922] border border-[#ff5500]/40 hover:border-[#ff5500] transition-all active:scale-95 col-span-2 sm:col-span-1 shadow-md"
-          >
-            <div className="w-7 h-7 rounded-lg bg-[#ff5500]/15 border border-[#ff5500]/40 text-[#ff7733] flex items-center justify-center mb-2">
-              <ShieldCheck className="w-3.5 h-3.5 stroke-[2.5]" />
+            <div className="w-10 h-10 rounded-2xl bg-pink-500/15 text-pink-400 flex items-center justify-center border border-pink-500/30 group-hover:scale-110 transition-transform">
+              <Rss className="w-5 h-5 stroke-[2.5]" />
             </div>
-            <div className="text-xs font-black text-white uppercase tracking-tight flex items-center gap-1">
-              <span>Admin & Fees Desk</span>
-              <span className="text-[8px] bg-[#ff5500] text-white px-1 rounded font-bold">ADMIN</span>
+            <div>
+              <h4 className="text-sm font-black text-white group-hover:text-pink-400 transition-colors flex items-center justify-between">
+                <span>Community Feed</span>
+                <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-white transition-transform group-hover:translate-x-1" />
+              </h4>
+              <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                Post match videos, share training reels, like and comment with fellow athletes.
+              </p>
             </div>
-            <div className="text-[10px] text-slate-400">Player roster, fee receipts & kit</div>
-          </button>
-        )}
-      </div>
-
-      {/* 4. RECENT GAME TAPES & MATCH HIGHLIGHTS */}
-      <div className="bg-[#121922] border border-slate-800 rounded-3xl p-4 sm:p-5 shadow-xl">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-1.5">
-            <Film className="w-4 h-4 text-[#ff5500]" />
-            <h3 className="text-xs font-black text-white uppercase tracking-wide">
-              MATCHDAY TAPES & VIDEO REELS
-            </h3>
           </div>
-          <button
-            onClick={onOpenUploadTape}
-            className="text-[10px] font-extrabold text-[#ff5500] hover:underline uppercase"
+
+          {/* Tile 3: AI Tactician & Coach */}
+          <div
+            onClick={onNavigateToChatbot || onNavigateToPerformance}
+            className="p-5 rounded-3xl bg-[#0e141c] border border-slate-800 hover:border-sky-500/60 hover:bg-slate-800/30 cursor-pointer transition-all shadow-lg group space-y-2.5 relative overflow-hidden"
           >
-            + Upload New
-          </button>
-        </div>
+            <div className="w-10 h-10 rounded-2xl bg-sky-500/15 text-sky-400 flex items-center justify-center border border-sky-500/30 group-hover:scale-110 transition-transform">
+              <Bot className="w-5 h-5 stroke-[2.5]" />
+            </div>
+            <div>
+              <h4 className="text-sm font-black text-white group-hover:text-sky-400 transition-colors flex items-center justify-between">
+                <span>AI Tactics & Coach</span>
+                <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-white transition-transform group-hover:translate-x-1" />
+              </h4>
+              <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                Get intelligent training drills, recovery advice, and tactical match formation guidance.
+              </p>
+            </div>
+          </div>
 
-        <div className="space-y-2.5">
-          {athlete.tapes && athlete.tapes.length > 0 ? (
-            athlete.tapes.slice(0, 2).map((tape) => (
-              <div
-                key={tape.id}
-                onClick={() => onPlayVideo(tape)}
-                className="group flex gap-3 p-2.5 rounded-2xl bg-[#080c10] border border-slate-800 hover:border-[#ff5500]/50 transition-all cursor-pointer shadow-md"
-              >
-                <div className="relative w-24 h-18 rounded-xl overflow-hidden bg-black shrink-0">
-                  <img
-                    src={tape.thumbnail}
-                    alt={tape.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform opacity-85"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                    <div className="w-7 h-7 rounded-full bg-[#ff5500] text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                      <Play className="w-3 h-3 fill-current translate-x-0.5" />
-                    </div>
-                  </div>
-                  <span className="absolute bottom-1 right-1 bg-black/80 text-white text-[8px] font-mono px-1 rounded">
-                    {tape.duration}
-                  </span>
-                </div>
+          {/* Tile 4: Match Fixtures & Scheduling */}
+          <div
+            onClick={onNavigateToSchedule}
+            className="p-5 rounded-3xl bg-[#0e141c] border border-slate-800 hover:border-amber-500/60 hover:bg-slate-800/30 cursor-pointer transition-all shadow-lg group space-y-2.5 relative overflow-hidden"
+          >
+            <div className="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-400 flex items-center justify-center border border-amber-500/30 group-hover:scale-110 transition-transform">
+              <Calendar className="w-5 h-5 stroke-[2.5]" />
+            </div>
+            <div>
+              <h4 className="text-sm font-black text-white group-hover:text-amber-400 transition-colors flex items-center justify-between">
+                <span>Fixture Schedule</span>
+                <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-white transition-transform group-hover:translate-x-1" />
+              </h4>
+              <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                Upcoming league fixtures, opponent analysis, starting XI lineups & match countdown.
+              </p>
+            </div>
+          </div>
 
-                <div className="flex-1 flex flex-col justify-between py-0.5">
-                  <div>
-                    <div className="flex items-center gap-1.5 mb-0.5">
-                      <span className="text-[8px] font-mono px-1.5 py-0.2 rounded bg-[#ff5500]/15 text-[#ff5500] font-black uppercase">
-                        {tape.category}
-                      </span>
-                      <span className="text-[9px] text-slate-400 font-mono">{tape.dateAdded}</span>
-                    </div>
-                    <h4 className="text-xs font-black text-white line-clamp-1 group-hover:text-[#ff5500] transition-colors">
-                      {tape.title}
-                    </h4>
-                  </div>
+          {/* Tile 5: Player Profile & Highlights */}
+          <div
+            onClick={onNavigateToProfile}
+            className="p-5 rounded-3xl bg-[#0e141c] border border-slate-800 hover:border-emerald-500/60 hover:bg-slate-800/30 cursor-pointer transition-all shadow-lg group space-y-2.5 relative overflow-hidden"
+          >
+            <div className="w-10 h-10 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center border border-emerald-500/30 group-hover:scale-110 transition-transform">
+              <User className="w-5 h-5 stroke-[2.5]" />
+            </div>
+            <div>
+              <h4 className="text-sm font-black text-white group-hover:text-emerald-400 transition-colors flex items-center justify-between">
+                <span>Athlete Profile</span>
+                <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-white transition-transform group-hover:translate-x-1" />
+              </h4>
+              <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                Edit biography, upload highlight videos, view match milestones and bio.
+              </p>
+            </div>
+          </div>
 
-                  <p className="text-[10px] text-slate-400 line-clamp-1">
-                    {tape.keyInsights ? tape.keyInsights[0] : 'Optical tracking active'}
-                  </p>
+          {/* Tile 6: Academy & Video Masterclasses */}
+          <div
+            onClick={onNavigateToCourses || onNavigateToPerformance}
+            className="p-5 rounded-3xl bg-[#0e141c] border border-slate-800 hover:border-[#ff5500]/60 hover:bg-slate-800/30 cursor-pointer transition-all shadow-lg group space-y-2.5 relative overflow-hidden"
+          >
+            <div className="w-10 h-10 rounded-2xl bg-[#ff5500]/15 text-[#ff5500] flex items-center justify-center border border-[#ff5500]/30 group-hover:scale-110 transition-transform">
+              <GraduationCap className="w-5 h-5 stroke-[2.5]" />
+            </div>
+            <div>
+              <h4 className="text-sm font-black text-white group-hover:text-[#ff5500] transition-colors flex items-center justify-between">
+                <span>Apex Academy Masterclasses</span>
+                <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-white transition-transform group-hover:translate-x-1" />
+              </h4>
+              <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                100% Free video lessons on finishing, fast bowling, knee rehab & spatial vision.
+              </p>
+            </div>
+          </div>
 
-                  <div className="flex items-center justify-between text-[9px] text-slate-400">
-                    <span className="text-[#00e5a3] font-bold">AI Kinematic HUD Ready</span>
-                    <span className="font-mono">{tape.fileSize || '350 MB'}</span>
-                  </div>
-                </div>
+          {/* Tile 7: Admin Desk (or Video Upload for Athletes) */}
+          {role === 'admin' && onNavigateToManagement ? (
+            <div
+              onClick={onNavigateToManagement}
+              className="p-5 rounded-3xl bg-[#0e141c] border border-slate-800 hover:border-indigo-500/60 hover:bg-slate-800/30 cursor-pointer transition-all shadow-lg group space-y-2.5 relative overflow-hidden"
+            >
+              <div className="w-10 h-10 rounded-2xl bg-indigo-500/15 text-indigo-400 flex items-center justify-center border border-indigo-500/30 group-hover:scale-110 transition-transform">
+                <CreditCard className="w-5 h-5 stroke-[2.5]" />
               </div>
-            ))
+              <div>
+                <h4 className="text-sm font-black text-white group-hover:text-indigo-400 transition-colors flex items-center justify-between">
+                  <span>Admin Management Desk</span>
+                  <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-white transition-transform group-hover:translate-x-1" />
+                </h4>
+                <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                  Squad rosters, player fees, inventory allocation & official club oversight.
+                </p>
+              </div>
+            </div>
           ) : (
-            <div className="text-center py-6 border border-dashed border-slate-800 rounded-2xl bg-[#080d12]/50">
-              <Film className="w-6 h-6 text-slate-600 mx-auto mb-1.5" />
-              <p className="text-xs text-slate-400 font-medium">No game tapes uploaded yet</p>
-              <button
-                onClick={onOpenUploadTape}
-                className="mt-2 text-[10px] font-black uppercase text-[#ff5500] hover:underline"
-              >
-                + Upload your first match tape
-              </button>
+            <div
+              onClick={onOpenUploadTape}
+              className="p-5 rounded-3xl bg-[#0e141c] border border-slate-800 hover:border-purple-500/60 hover:bg-slate-800/30 cursor-pointer transition-all shadow-lg group space-y-2.5 relative overflow-hidden"
+            >
+              <div className="w-10 h-10 rounded-2xl bg-purple-500/15 text-purple-400 flex items-center justify-center border border-purple-500/30 group-hover:scale-110 transition-transform">
+                <Upload className="w-5 h-5 stroke-[2.5]" />
+              </div>
+              <div>
+                <h4 className="text-sm font-black text-white group-hover:text-purple-400 transition-colors flex items-center justify-between">
+                  <span>Upload Match Tape</span>
+                  <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-white transition-transform group-hover:translate-x-1" />
+                </h4>
+                <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                  Upload raw video reels or match recordings for tactical analysis.
+                </p>
+              </div>
             </div>
           )}
         </div>
       </div>
 
+      {/* 4. PLATFORM PILLARS / VERIFIED HIGHLIGHTS */}
+      <div className="bg-[#0e141c] border border-slate-800/90 rounded-3xl p-5 shadow-xl grid grid-cols-1 sm:grid-cols-3 gap-4 text-left">
+        <div className="flex items-start gap-3">
+          <div className="p-2 rounded-xl bg-emerald-500/15 text-emerald-400 shrink-0">
+            <CheckCircle2 className="w-5 h-5" />
+          </div>
+          <div>
+            <h5 className="text-xs font-black text-white uppercase">Real Database Powered</h5>
+            <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
+              No fake or hardcoded numbers. All analytics derive from real logged activity.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-start gap-3">
+          <div className="p-2 rounded-xl bg-[#ff5500]/15 text-[#ff5500] shrink-0">
+            <Trophy className="w-5 h-5" />
+          </div>
+          <div>
+            <h5 className="text-xs font-black text-white uppercase">Multi-Sport Matrix</h5>
+            <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
+              Built for Football, Cricket, Volleyball, Basketball, Athletics & more.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-start gap-3">
+          <div className="p-2 rounded-xl bg-sky-500/15 text-sky-400 shrink-0">
+            <Zap className="w-5 h-5" />
+          </div>
+          <div>
+            <h5 className="text-xs font-black text-white uppercase">Real-Time Sync</h5>
+            <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
+              Instant live socket updates for posts, match scores, and comments.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

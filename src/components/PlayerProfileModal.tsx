@@ -149,6 +149,22 @@ export const PlayerProfileModal: React.FC<PlayerProfileModalProps> = ({
             <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
               {athlete.bio || 'High-performance professional athlete focusing on match sprint velocity, kinetic symmetry, and tactical finishing.'}
             </p>
+
+            {/* Unique QR for this player's or staff/admin profile */}
+            <div className="mt-3 flex items-center gap-3 p-2.5 rounded-xl bg-[#080c10] border border-slate-800">
+              <div className="bg-white p-1.5 rounded-lg shrink-0">
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=0&data=${encodeURIComponent(`apex://profile/${athlete.id}`)}`}
+                  alt={`QR code for ${athlete.name}`}
+                  className="w-20 h-20"
+                />
+              </div>
+              <div className="min-w-0">
+                <div className="text-[10px] font-black text-white uppercase tracking-wider">Profile QR Code</div>
+                <div className="text-[9px] text-slate-400 mt-1">Scan to identify this profile</div>
+                <div className="text-[8px] text-[#ff5500] font-mono mt-1 break-all">{athlete.id}</div>
+              </div>
+            </div>
           </div>
 
           {/* Follow / Following CTA Button */}

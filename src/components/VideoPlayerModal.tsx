@@ -141,7 +141,7 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({ item, isOpen
                 }}
               >
                 <div className="absolute -top-6 left-0 bg-[#ff5500] text-white text-[9px] sm:text-[10px] font-mono font-black px-1.5 py-0.5 rounded whitespace-nowrap shadow">
-                  #9 RUSH • {currentSpeed} KM/H
+                  #9 • {currentSpeed} KM/H
                 </div>
                 <div className="absolute -bottom-5 left-0 bg-black/80 border border-slate-700 text-[#00e5a3] text-[8px] font-mono px-1 rounded">
                   SYM: {currentSymmetry}%

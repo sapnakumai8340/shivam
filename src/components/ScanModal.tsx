@@ -354,8 +354,8 @@ export const ScanModal: React.FC<ScanModalProps> = ({ isOpen, onClose, onScanCom
     sourceType === 'upload' && uploadedFile
       ? uploadedFile.url
       : sourceType === 'sample'
-      ? selectedSample.url
-      : '';
+        ? selectedSample.url
+        : '';
 
   const isCurrentVideo =
     sourceType === 'upload' && uploadedFile?.type === 'video';
@@ -433,7 +433,7 @@ export const ScanModal: React.FC<ScanModalProps> = ({ isOpen, onClose, onScanCom
           scanType,
           mediaType: isCurrentVideo ? 'video' : 'image',
           imageBase64: imageBase64.startsWith('data:image') ? imageBase64 : '',
-          athleteName: 'MARCUS RUSH',
+          athleteName: 'ATHLETE',
           customNotes
         })
       });
@@ -469,7 +469,7 @@ export const ScanModal: React.FC<ScanModalProps> = ({ isOpen, onClose, onScanCom
 
     const newScan = {
       id: `scan-${Date.now()}`,
-      athleteName: 'MARCUS RUSH',
+      athleteName: 'E',
       athleteId: 'APX-9942',
       scanDate: 'Just now',
       scanType: scanType,
@@ -534,9 +534,8 @@ export const ScanModal: React.FC<ScanModalProps> = ({ isOpen, onClose, onScanCom
               setSourceType('sample');
               if (useCamera) stopCamera();
             }}
-            className={`py-1.5 px-2 rounded-xl text-[11px] font-extrabold uppercase transition-all flex items-center justify-center gap-1 ${
-              sourceType === 'sample' ? 'bg-[#ff5500] text-white' : 'text-slate-400 hover:text-white'
-            }`}
+            className={`py-1.5 px-2 rounded-xl text-[11px] font-extrabold uppercase transition-all flex items-center justify-center gap-1 ${sourceType === 'sample' ? 'bg-[#ff5500] text-white' : 'text-slate-400 hover:text-white'
+              }`}
           >
             <Eye className="w-3 h-3" />
             <span>Sample Clips</span>
@@ -547,9 +546,8 @@ export const ScanModal: React.FC<ScanModalProps> = ({ isOpen, onClose, onScanCom
               fileInputRef.current?.click();
               if (useCamera) stopCamera();
             }}
-            className={`py-1.5 px-2 rounded-xl text-[11px] font-extrabold uppercase transition-all flex items-center justify-center gap-1 ${
-              sourceType === 'upload' ? 'bg-[#ff5500] text-white' : 'text-slate-400 hover:text-white'
-            }`}
+            className={`py-1.5 px-2 rounded-xl text-[11px] font-extrabold uppercase transition-all flex items-center justify-center gap-1 ${sourceType === 'upload' ? 'bg-[#ff5500] text-white' : 'text-slate-400 hover:text-white'
+              }`}
           >
             <Upload className="w-3 h-3" />
             <span>Upload Media</span>
@@ -564,9 +562,8 @@ export const ScanModal: React.FC<ScanModalProps> = ({ isOpen, onClose, onScanCom
                 startCamera();
               }
             }}
-            className={`py-1.5 px-2 rounded-xl text-[11px] font-extrabold uppercase transition-all flex items-center justify-center gap-1 ${
-              sourceType === 'camera' ? 'bg-[#ff5500] text-white' : 'text-slate-400 hover:text-white'
-            }`}
+            className={`py-1.5 px-2 rounded-xl text-[11px] font-extrabold uppercase transition-all flex items-center justify-center gap-1 ${sourceType === 'camera' ? 'bg-[#ff5500] text-white' : 'text-slate-400 hover:text-white'
+              }`}
           >
             <Camera className="w-3 h-3" />
             <span>{useCamera ? 'Camera Active' : 'Live Camera'}</span>
@@ -618,25 +615,22 @@ export const ScanModal: React.FC<ScanModalProps> = ({ isOpen, onClose, onScanCom
             <div className="flex items-center gap-1.5">
               <button
                 onClick={() => setShowSkeleton(!showSkeleton)}
-                className={`px-1.5 py-0.5 rounded border ${
-                  showSkeleton ? 'bg-[#ff5500]/20 border-[#ff5500] text-[#ff5500]' : 'bg-slate-800 border-slate-700 text-slate-400'
-                }`}
+                className={`px-1.5 py-0.5 rounded border ${showSkeleton ? 'bg-[#ff5500]/20 border-[#ff5500] text-[#ff5500]' : 'bg-slate-800 border-slate-700 text-slate-400'
+                  }`}
               >
                 3D Pose Mesh
               </button>
               <button
                 onClick={() => setShowHeatmap(!showHeatmap)}
-                className={`px-1.5 py-0.5 rounded border ${
-                  showHeatmap ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : 'bg-slate-800 border-slate-700 text-slate-400'
-                }`}
+                className={`px-1.5 py-0.5 rounded border ${showHeatmap ? 'bg-emerald-500/20 border-emerald-500 text-emerald-400' : 'bg-slate-800 border-slate-700 text-slate-400'
+                  }`}
               >
                 Joint Heatmap
               </button>
               <button
                 onClick={() => setShowAngles(!showAngles)}
-                className={`px-1.5 py-0.5 rounded border ${
-                  showAngles ? 'bg-cyan-500/20 border-cyan-500 text-cyan-400' : 'bg-slate-800 border-slate-700 text-slate-400'
-                }`}
+                className={`px-1.5 py-0.5 rounded border ${showAngles ? 'bg-cyan-500/20 border-cyan-500 text-cyan-400' : 'bg-slate-800 border-slate-700 text-slate-400'
+                  }`}
               >
                 Angles
               </button>
@@ -652,11 +646,10 @@ export const ScanModal: React.FC<ScanModalProps> = ({ isOpen, onClose, onScanCom
               <button
                 key={s.id}
                 onClick={() => setSelectedSample(s)}
-                className={`px-2.5 py-1 rounded-xl text-[10px] font-bold whitespace-nowrap transition-all border ${
-                  selectedSample.id === s.id
+                className={`px-2.5 py-1 rounded-xl text-[10px] font-bold whitespace-nowrap transition-all border ${selectedSample.id === s.id
                     ? 'bg-[#1e293b] border-[#ff5500] text-white shadow-sm'
                     : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:text-white'
-                }`}
+                  }`}
               >
                 {s.label}
               </button>
@@ -717,41 +710,36 @@ export const ScanModal: React.FC<ScanModalProps> = ({ isOpen, onClose, onScanCom
             <div className="grid grid-cols-5 gap-1 bg-[#080c10] p-1 rounded-xl border border-slate-800 text-[10px] font-black uppercase text-center shrink-0">
               <button
                 onClick={() => setActiveTab('overview')}
-                className={`py-1.5 rounded-lg transition-all ${
-                  activeTab === 'overview' ? 'bg-[#ff5500] text-white' : 'text-slate-400 hover:text-white'
-                }`}
+                className={`py-1.5 rounded-lg transition-all ${activeTab === 'overview' ? 'bg-[#ff5500] text-white' : 'text-slate-400 hover:text-white'
+                  }`}
               >
                 Overview
               </button>
               <button
                 onClick={() => setActiveTab('angles')}
-                className={`py-1.5 rounded-lg transition-all ${
-                  activeTab === 'angles' ? 'bg-[#ff5500] text-white' : 'text-slate-400 hover:text-white'
-                }`}
+                className={`py-1.5 rounded-lg transition-all ${activeTab === 'angles' ? 'bg-[#ff5500] text-white' : 'text-slate-400 hover:text-white'
+                  }`}
               >
                 Angles
               </button>
               <button
                 onClick={() => setActiveTab('corrections')}
-                className={`py-1.5 rounded-lg transition-all ${
-                  activeTab === 'corrections' ? 'bg-[#ff5500] text-white' : 'text-slate-400 hover:text-white'
-                }`}
+                className={`py-1.5 rounded-lg transition-all ${activeTab === 'corrections' ? 'bg-[#ff5500] text-white' : 'text-slate-400 hover:text-white'
+                  }`}
               >
                 Flaws
               </button>
               <button
                 onClick={() => setActiveTab('risks')}
-                className={`py-1.5 rounded-lg transition-all ${
-                  activeTab === 'risks' ? 'bg-[#ff5500] text-white' : 'text-slate-400 hover:text-white'
-                }`}
+                className={`py-1.5 rounded-lg transition-all ${activeTab === 'risks' ? 'bg-[#ff5500] text-white' : 'text-slate-400 hover:text-white'
+                  }`}
               >
                 Risks
               </button>
               <button
                 onClick={() => setActiveTab('solutions')}
-                className={`py-1.5 rounded-lg transition-all ${
-                  activeTab === 'solutions' ? 'bg-[#ff5500] text-white' : 'text-slate-400 hover:text-white'
-                }`}
+                className={`py-1.5 rounded-lg transition-all ${activeTab === 'solutions' ? 'bg-[#ff5500] text-white' : 'text-slate-400 hover:text-white'
+                  }`}
               >
                 Solutions
               </button>
@@ -775,13 +763,12 @@ export const ScanModal: React.FC<ScanModalProps> = ({ isOpen, onClose, onScanCom
                   <div className="bg-[#080c10] border border-slate-800 rounded-2xl p-3">
                     <span className="text-[9px] font-bold text-slate-400 uppercase block">INJURY RISK LEVEL</span>
                     <span
-                      className={`text-xl font-black font-mono mt-0.5 block ${
-                        analysis.injuryRisks[0]?.level === 'HIGH'
+                      className={`text-xl font-black font-mono mt-0.5 block ${analysis.injuryRisks[0]?.level === 'HIGH'
                           ? 'text-red-500'
                           : analysis.injuryRisks[0]?.level === 'MODERATE'
-                          ? 'text-amber-400'
-                          : 'text-[#00e5a3]'
-                      }`}
+                            ? 'text-amber-400'
+                            : 'text-[#00e5a3]'
+                        }`}
                     >
                       {analysis.injuryRisks[0]?.level || 'LOW'}
                     </span>
@@ -848,13 +835,12 @@ export const ScanModal: React.FC<ScanModalProps> = ({ isOpen, onClose, onScanCom
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-xs font-black text-white">{r.area}</span>
                       <span
-                        className={`text-[9px] font-black px-2 py-0.5 rounded ${
-                          r.level === 'HIGH'
+                        className={`text-[9px] font-black px-2 py-0.5 rounded ${r.level === 'HIGH'
                             ? 'bg-red-500/20 text-red-400 border border-red-500/40'
                             : r.level === 'MODERATE'
-                            ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40'
-                            : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
-                        }`}
+                              ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40'
+                              : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
+                          }`}
                       >
                         {r.level} RISK
                       </span>

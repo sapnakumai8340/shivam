@@ -134,7 +134,7 @@ export const UploadTapeModal: React.FC<UploadTapeModalProps> = ({
               thumbnail: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=80',
               videoUrl: previewVideoUrl || undefined,
               fileSize: selectedFile ? `${(selectedFile.size / (1024 * 1024)).toFixed(1)} MB` : '320 MB',
-              playerHighlight: 'Marcus Rush (#9)',
+              playerHighlight: 'Tactical Play (#9)',
               isRealUpload: !!selectedFile,
               keyInsights: [
                 'Optical kinematic motion tracking successfully resolved 60 fps velocity envelope.',

@@ -1,6 +1,6 @@
-export type UserRole = 'player' | 'admin';
+export type UserRole = 'player' | 'coach' | 'admin';
 
-export type ActiveScreen = 'home' | 'feed' | 'performance' | 'profile' | 'schedule' | 'records' | 'chatbot' | 'management';
+export type ActiveScreen = 'home' | 'feed' | 'performance' | 'profile' | 'schedule' | 'records' | 'chatbot' | 'management' | 'courses';
 
 export type FeePaymentStatus = 'PAID' | 'PENDING' | 'OVERDUE' | 'PARTIAL';
 
@@ -113,6 +113,9 @@ export interface AthleteProfile {
     games: number;
     goals: number;
     assists: number;
+    runs?: number;
+    wickets?: number;
+    points?: number;
     topSpeed: number; // km/h
     passAccuracy: number; // %
     shotConversion: number; // %
@@ -428,6 +431,13 @@ export interface SessionRecord {
   jointTorqueNm: number;
   acwr: number;
   rpeLoadScore: number;
+  sport?: string;
+  goalsScored?: number;
+  assistsGiven?: number;
+  runsScored?: number;
+  wicketsTaken?: number;
+  pointsScored?: number;
+  scoreResult?: string;
   notes?: string;
   telemetryPoints?: Array<{
     minute: number;
@@ -438,5 +448,74 @@ export interface SessionRecord {
     jointTorqueNm: number;
     label?: string;
   }>;
+}
+
+// ==========================================
+// COURSES & ACADEMY LEARNING PLATFORM TYPES
+// ==========================================
+
+export interface CourseLesson {
+  id: string;
+  title: string;
+  description?: string;
+  durationMinutes: number;
+  durationLabel: string; // e.g. "08:45"
+  videoUrl: string;
+  thumbnailUrl?: string;
+  order: number;
+}
+
+export interface CourseChapter {
+  id: string;
+  title: string;
+  description?: string;
+  order: number;
+  lessons: CourseLesson[];
+}
+
+export interface Course {
+  id: string;
+  title: string;
+  slug?: string;
+  description: string;
+  longDescription?: string;
+  thumbnail: string;
+  category: 'Football' | 'Cricket' | 'Basketball' | 'Tennis' | 'Athletics' | 'Strength & Conditioning' | 'Biomechanics & Rehab' | 'General';
+  instructorName: string;
+  instructorTitle?: string;
+  instructorAvatar?: string;
+  level: 'ALL LEVELS' | 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED';
+  isPublished: boolean;
+  totalDurationMinutes: number;
+  totalLessonsCount: number;
+  rating: number;
+  enrolledCount: number;
+  badge?: string;
+  createdAt: number;
+  updatedAt: number;
+  chapters: CourseChapter[];
+}
+
+export interface UserCourseProgress {
+  userId: string;
+  courseId: string;
+  enrolledAt: number;
+  completedLessonIds: string[];
+  lastWatchedLessonId?: string;
+  lastWatchedPositionSec?: number;
+  lastWatchedTimestamp?: number;
+  overallProgressPct: number;
+}
+
+export interface LoginActivity {
+  id: string;
+  playerId: string;
+  playerName: string;
+  playerAvatar: string;
+  playerPosition: string;
+  playerNumber: number;
+  type: 'LOGIN' | 'SIGNUP';
+  timestamp: number;
+  role: string;
 }
 

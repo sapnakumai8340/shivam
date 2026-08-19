@@ -26,7 +26,7 @@ interface EditProfileModalProps {
 
 const PRESET_AVATARS = [
   {
-    label: 'Marcus R.',
+    label: 'Player A',
     avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=256&q=80',
     action: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=80',
   },
@@ -64,6 +64,14 @@ const POSITIONS = [
   { code: 'GK', role: 'GOALKEEPER' },
 ];
 
+const getSportFromSpecialty = (specialty?: string): 'Cricket' | 'Basketball' | 'Football' => {
+  const spec = (specialty || '').toLowerCase();
+  if (spec.includes('cricket')) return 'Cricket';
+  if (spec.includes('basketball')) return 'Basketball';
+  return 'Football';
+};
+
+
 export const EditProfileModal: React.FC<EditProfileModalProps> = ({
   isOpen,
   athlete,
@@ -89,6 +97,9 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
   const [games, setGames] = useState(athlete.stats.games);
   const [goals, setGoals] = useState(athlete.stats.goals);
   const [assists, setAssists] = useState(athlete.stats.assists);
+  const [runs, setRuns] = useState(athlete.stats.runs || 0);
+  const [wickets, setWickets] = useState(athlete.stats.wickets || 0);
+  const [points, setPoints] = useState(athlete.stats.points || 0);
 
   const [savedSuccess, setSavedSuccess] = useState(false);
 
@@ -135,6 +146,9 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
         games: Number(games),
         goals: Number(goals),
         assists: Number(assists),
+        runs: Number(runs),
+        wickets: Number(wickets),
+        points: Number(points),
       },
     };
 
@@ -285,7 +299,7 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                placeholder="e.g. MARCUS RUSH"
+                placeholder="e.g. RAHUL KUMAR"
                 className="w-full bg-[#0c1015] border border-slate-800 focus:border-[#ff5500] rounded-xl px-3 py-2 text-xs font-bold text-white uppercase focus:outline-none"
               />
             </div>
@@ -476,31 +490,88 @@ export const EditProfileModal: React.FC<EditProfileModalProps> = ({
                 />
               </div>
 
-              <div>
-                <label className="block text-[9px] font-bold text-slate-400 uppercase mb-0.5">
-                  Goals
-                </label>
-                <input
-                  type="number"
-                  value={goals}
-                  onChange={(e) => setGoals(Number(e.target.value))}
-                  min={0}
-                  className="w-full bg-[#121922] border border-slate-800 focus:border-[#ff5500] rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-[9px] font-bold text-slate-400 uppercase mb-0.5">
-                  Assists
-                </label>
-                <input
-                  type="number"
-                  value={assists}
-                  onChange={(e) => setAssists(Number(e.target.value))}
-                  min={0}
-                  className="w-full bg-[#121922] border border-slate-800 focus:border-[#ff5500] rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none"
-                />
-              </div>
+              {getSportFromSpecialty(sportSpecialty) === 'Cricket' ? (
+                <>
+                  <div>
+                    <label className="block text-[9px] font-bold text-slate-400 uppercase mb-0.5">
+                      Runs Scored
+                    </label>
+                    <input
+                      type="number"
+                      value={runs}
+                      onChange={(e) => setRuns(Number(e.target.value))}
+                      min={0}
+                      className="w-full bg-[#121922] border border-slate-800 focus:border-[#ff5500] rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[9px] font-bold text-slate-400 uppercase mb-0.5">
+                      Wickets Taken
+                    </label>
+                    <input
+                      type="number"
+                      value={wickets}
+                      onChange={(e) => setWickets(Number(e.target.value))}
+                      min={0}
+                      className="w-full bg-[#121922] border border-slate-800 focus:border-[#ff5500] rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none"
+                    />
+                  </div>
+                </>
+              ) : getSportFromSpecialty(sportSpecialty) === 'Basketball' ? (
+                <>
+                  <div>
+                    <label className="block text-[9px] font-bold text-slate-400 uppercase mb-0.5">
+                      Points Scored
+                    </label>
+                    <input
+                      type="number"
+                      value={points}
+                      onChange={(e) => setPoints(Number(e.target.value))}
+                      min={0}
+                      className="w-full bg-[#121922] border border-slate-800 focus:border-[#ff5500] rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[9px] font-bold text-slate-400 uppercase mb-0.5">
+                      Assists
+                    </label>
+                    <input
+                      type="number"
+                      value={assists}
+                      onChange={(e) => setAssists(Number(e.target.value))}
+                      min={0}
+                      className="w-full bg-[#121922] border border-slate-800 focus:border-[#ff5500] rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none"
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <label className="block text-[9px] font-bold text-slate-400 uppercase mb-0.5">
+                      Goals
+                    </label>
+                    <input
+                      type="number"
+                      value={goals}
+                      onChange={(e) => setGoals(Number(e.target.value))}
+                      min={0}
+                      className="w-full bg-[#121922] border border-slate-800 focus:border-[#ff5500] rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[9px] font-bold text-slate-400 uppercase mb-0.5">
+                      Assists
+                    </label>
+                    <input
+                      type="number"
+                      value={assists}
+                      onChange={(e) => setAssists(Number(e.target.value))}
+                      min={0}
+                      className="w-full bg-[#121922] border border-slate-800 focus:border-[#ff5500] rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none"
+                    />
+                  </div>
+                </>
+              )}
             </div>
           </div>
 

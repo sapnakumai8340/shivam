@@ -168,6 +168,14 @@ class SocketService {
     this.socket?.emit('story:create', story);
   }
 
+  public emit(event: string, ...args: any[]) {
+    this.socket?.emit(event, ...args);
+  }
+
+  public createSession(session: any) {
+    this.socket?.emit('session:create', session);
+  }
+
   public createScan(scan: BiomechanicalScan) {
     this.socket?.emit('scan:create', scan);
   }

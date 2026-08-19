@@ -197,7 +197,7 @@ export const SportTacticalField: React.FC<SportTacticalFieldProps> = ({
         <div className="absolute inset-0 z-10 pointer-events-auto">
           {tacticalNodes.map((node) => {
             const isHovered = activePlayerHover === node.id;
-            const isStar = node.name.toLowerCase().includes('marcus') || node.number === 9 || node.number === 1;
+            const isStar = node.number === 9 || node.number === 1;
 
             return (
               <div

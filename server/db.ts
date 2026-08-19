@@ -41,6 +41,9 @@ export interface UserRecord {
     games: number;
     goals: number;
     assists: number;
+    runs?: number;
+    wickets?: number;
+    points?: number;
     topSpeed: number;
     passAccuracy: number;
     shotConversion: number;
@@ -141,6 +144,13 @@ export interface SessionRecord {
   jointTorqueNm: number;
   acwr: number;
   rpeLoadScore: number;
+  sport?: string;
+  goalsScored?: number;
+  assistsGiven?: number;
+  runsScored?: number;
+  wicketsTaken?: number;
+  pointsScored?: number;
+  scoreResult?: string;
   notes?: string;
   telemetryPoints?: Array<{
     minute: number;
@@ -151,6 +161,59 @@ export interface SessionRecord {
     jointTorqueNm: number;
     label?: string;
   }>;
+}
+
+export interface CourseLesson {
+  id: string;
+  title: string;
+  description?: string;
+  durationMinutes: number;
+  durationLabel: string;
+  videoUrl: string;
+  thumbnailUrl?: string;
+  order: number;
+}
+
+export interface CourseChapter {
+  id: string;
+  title: string;
+  description?: string;
+  order: number;
+  lessons: CourseLesson[];
+}
+
+export interface Course {
+  id: string;
+  title: string;
+  slug?: string;
+  description: string;
+  longDescription?: string;
+  thumbnail: string;
+  category: 'Football' | 'Cricket' | 'Basketball' | 'Tennis' | 'Athletics' | 'Strength & Conditioning' | 'Biomechanics & Rehab' | 'General';
+  instructorName: string;
+  instructorTitle?: string;
+  instructorAvatar?: string;
+  level: 'ALL LEVELS' | 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED';
+  isPublished: boolean;
+  totalDurationMinutes: number;
+  totalLessonsCount: number;
+  rating: number;
+  enrolledCount: number;
+  badge?: string;
+  createdAt: number;
+  updatedAt: number;
+  chapters: CourseChapter[];
+}
+
+export interface UserCourseProgress {
+  userId: string;
+  courseId: string;
+  enrolledAt: number;
+  completedLessonIds: string[];
+  lastWatchedLessonId?: string;
+  lastWatchedPositionSec?: number;
+  lastWatchedTimestamp?: number;
+  overallProgressPct: number;
 }
 
 export interface DbState {
@@ -165,6 +228,8 @@ export interface DbState {
   stories: any[];
   chatMessages: any[];
   sessions: SessionRecord[];
+  courses: Course[];
+  courseProgress: Record<string, UserCourseProgress>;
 }
 
 const DB_FILE = path.join(process.cwd(), 'data', 'database.json');
@@ -344,9 +409,9 @@ class DatabaseService {
       },
       'APX-9943': {
         id: 'APX-9943',
-        name: 'MARCUS STERLING',
-        username: '@marcus_s',
-        email: 'marcus.sterling@apex.pro',
+        name: 'ARJUN STERLING',
+        username: '@arjun_s',
+        email: 'arjun.sterling@apex.pro',
         password: 'password123',
         role: 'player',
         avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80',
@@ -539,7 +604,7 @@ class DatabaseService {
         tacticalFormation: '4-3-3 Attacking High-Press',
         assignedLineup: [
           { playerId: 'APX-9942', playerName: 'RAHUL KUMAR', number: 9, position: 'FWD', role: 'Starter', readiness: 95, status: 'Confirmed' },
-          { playerId: 'APX-9943', playerName: 'MARCUS STERLING', number: 7, position: 'WNG', role: 'Starter', readiness: 94, status: 'Confirmed' },
+          { playerId: 'APX-9943', playerName: 'ARJUN STERLING', number: 7, position: 'WNG', role: 'Starter', readiness: 94, status: 'Confirmed' },
           { playerId: 'APX-9944', playerName: 'LEO SILVA', number: 10, position: 'MID', role: 'Starter', readiness: 93, status: 'Confirmed' },
           { playerId: 'APX-9945', playerName: 'DAVID CHEN', number: 4, position: 'DEF', role: 'Starter', readiness: 91, status: 'Confirmed' },
           { playerId: 'APX-9946', playerName: 'ARJUN SHARMA', number: 8, position: 'MID', role: 'Starter', readiness: 90, status: 'Confirmed' },
@@ -586,6 +651,299 @@ class DatabaseService {
       },
     ];
 
+    const seedCourses: Course[] = [
+      {
+        id: 'crs-football-01',
+        title: 'Elite Striker Movement & High-Velocity Finishing',
+        slug: 'elite-striker-movement',
+        description: 'Master blindside runs, first-touch kills, and clinical 1-touch finishing under physical pressure in the penalty box.',
+        longDescription: 'Developed by Apex High Performance Coaches, this tactical masterclass breaks down optical telemetry and GPS movement patterns used by professional center forwards to consistently create 3.5+ meters of separation in the final third.',
+        thumbnail: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80',
+        category: 'Football',
+        instructorName: 'Sarah Vance',
+        instructorTitle: 'Head Performance Coach • Apex Academy',
+        instructorAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80',
+        level: 'ALL LEVELS',
+        isPublished: true,
+        totalDurationMinutes: 65,
+        totalLessonsCount: 5,
+        rating: 4.9,
+        enrolledCount: 142,
+        badge: 'MASTERCLASS',
+        createdAt: 1770000000000,
+        updatedAt: 1770000000000,
+        chapters: [
+          {
+            id: 'ch-1',
+            title: 'Chapter 1: Box Deceleration & Off-The-Ball Separation',
+            description: 'Biomechanical timing of the secondary cut to deceive center-backs.',
+            order: 1,
+            lessons: [
+              {
+                id: 'les-1',
+                title: 'The 3.5m Blindside Cut & Deceleration Vector',
+                description: 'How to read the center-back hips and execute an explosive cutaway.',
+                durationMinutes: 12,
+                durationLabel: '12:45',
+                videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+                thumbnailUrl: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=600&q=80',
+                order: 1,
+              },
+              {
+                id: 'les-2',
+                title: 'First-Touch Directional Killing In Tight Quarters',
+                description: 'Cushioning high-speed passes directly into shooting stride without stutter-stepping.',
+                durationMinutes: 14,
+                durationLabel: '14:20',
+                videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyBlazes.mp4',
+                thumbnailUrl: 'https://images.unsplash.com/photo-1517649763962-0c623266ddc0?auto=format&fit=crop&w=600&q=80',
+                order: 2,
+              },
+              {
+                id: 'les-3',
+                title: 'Near-Post Dynamic Sprints on Low Crosses',
+                description: 'Accelerating across the front of the goalkeeper with zero stride stutter.',
+                durationMinutes: 11,
+                durationLabel: '11:15',
+                videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+                thumbnailUrl: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=600&q=80',
+                order: 3,
+              },
+            ],
+          },
+          {
+            id: 'ch-2',
+            title: 'Chapter 2: Finishing Under Heavy Contact',
+            description: 'Maintaining pelvic kinetic alignment when challenged physically.',
+            order: 2,
+            lessons: [
+              {
+                id: 'les-4',
+                title: 'Low-Driven Corner Placement Mechanics',
+                description: 'Planted foot ankle rigidity and follow-through trajectory.',
+                durationMinutes: 15,
+                durationLabel: '15:30',
+                videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+                thumbnailUrl: 'https://images.unsplash.com/photo-1575361204480-aadea25e6e68?auto=format&fit=crop&w=600&q=80',
+                order: 1,
+              },
+              {
+                id: 'les-5',
+                title: 'Half-Volley Kinetic Chain Power Transfer',
+                description: 'Generating 100+ km/h shot speed off bouncing balls.',
+                durationMinutes: 13,
+                durationLabel: '13:10',
+                videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyBlazes.mp4',
+                thumbnailUrl: 'https://images.unsplash.com/photo-1526232761682-d26e03ac148e?auto=format&fit=crop&w=600&q=80',
+                order: 2,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'crs-cricket-02',
+        title: 'Fast Bowling Biomechanics & 140+ km/h Velocity Science',
+        slug: 'fast-bowling-biomechanics',
+        description: 'Optimize run-up rhythm, front-foot braking force, and wrist release physics to gain 5-8 km/h without extra strain.',
+        longDescription: 'Comprehensive breakdown of high-velocity fast bowling physics. Covers run-up velocity progression, front-foot brace angle, pelvic rotation, and wrist snap mechanics monitored through optical force tracking.',
+        thumbnail: 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=800&q=80',
+        category: 'Cricket',
+        instructorName: 'Vikram Rathore',
+        instructorTitle: 'Senior Pace Coach & Biomechanics Lead',
+        instructorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80',
+        level: 'INTERMEDIATE',
+        isPublished: true,
+        totalDurationMinutes: 52,
+        totalLessonsCount: 4,
+        rating: 4.95,
+        enrolledCount: 98,
+        badge: 'POPULAR',
+        createdAt: 1770000000000,
+        updatedAt: 1770000000000,
+        chapters: [
+          {
+            id: 'ch-crk-1',
+            title: 'Module 1: Run-Up Rhythm & Delivery Stride',
+            description: 'Building momentum without energy leakage.',
+            order: 1,
+            lessons: [
+              {
+                id: 'les-crk-1',
+                title: 'Rhythmic Acceleration & Step Frequency',
+                description: 'The mathematical build-up of speed into the penultimate stride.',
+                durationMinutes: 14,
+                durationLabel: '14:00',
+                videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+                thumbnailUrl: 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=600&q=80',
+                order: 1,
+              },
+              {
+                id: 'les-crk-2',
+                title: 'Front-Foot Landing Brake Force & Kinetic Transfer',
+                description: 'Locking the front knee at 165° to catapult the torso forward.',
+                durationMinutes: 12,
+                durationLabel: '12:30',
+                videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyBlazes.mp4',
+                thumbnailUrl: 'https://images.unsplash.com/photo-1517649763962-0c623266ddc0?auto=format&fit=crop&w=600&q=80',
+                order: 2,
+              },
+            ],
+          },
+          {
+            id: 'ch-crk-2',
+            title: 'Module 2: Wrist Position & Outswinger Release',
+            description: 'Seam orientation aerodynamics at 140+ km/h.',
+            order: 2,
+            lessons: [
+              {
+                id: 'les-crk-3',
+                title: 'Cocked Wrist Snap & 1st Slip Seam Angle',
+                description: 'Maximizing laminar airflow for late aerodynamic swing.',
+                durationMinutes: 13,
+                durationLabel: '13:45',
+                videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+                thumbnailUrl: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=600&q=80',
+                order: 1,
+              },
+              {
+                id: 'les-crk-4',
+                title: 'Death Overs Yorker & Slower Ball Deception',
+                description: 'Disguising release points and bowling pinpoint yorkers under pressure.',
+                durationMinutes: 13,
+                durationLabel: '13:15',
+                videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+                thumbnailUrl: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=600&q=80',
+                order: 2,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'crs-rehab-03',
+        title: 'ACL Injury Prevention & Bilateral Force Symmetry',
+        slug: 'acl-injury-prevention',
+        description: 'Elite conditioning protocols for knee joint stabilization, decelerative load management, and kinetic chain symmetry.',
+        longDescription: 'A clinical and athletic blueprint for bulletproofing knees, eliminating quad/hamstring imbalances, and mastering eccentric deceleration mechanics.',
+        thumbnail: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80',
+        category: 'Biomechanics & Rehab',
+        instructorName: 'Dr. Elena Voss',
+        instructorTitle: 'Sports Physiologist & Kinetic Specialist',
+        instructorAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=256&q=80',
+        level: 'ALL LEVELS',
+        isPublished: true,
+        totalDurationMinutes: 44,
+        totalLessonsCount: 3,
+        rating: 4.98,
+        enrolledCount: 184,
+        badge: 'ESSENTIAL',
+        createdAt: 1770000000000,
+        updatedAt: 1770000000000,
+        chapters: [
+          {
+            id: 'ch-rhb-1',
+            title: 'Part 1: Deceleration Valgus Control & Landing Mechanics',
+            description: 'Correcting inward knee collapse during high-speed cuts.',
+            order: 1,
+            lessons: [
+              {
+                id: 'les-rhb-1',
+                title: 'Force Plate 50/50 Symmetry Baseline Assessment',
+                description: 'Identifying hidden bilateral asymmetries before tissue strain occurs.',
+                durationMinutes: 15,
+                durationLabel: '15:10',
+                videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+                thumbnailUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80',
+                order: 1,
+              },
+              {
+                id: 'les-rhb-2',
+                title: 'Single-Leg Drop Jump & Dynamic Glute Medius Firing',
+                description: 'Engaging lateral hip stabilizers to absorb 3x bodyweight impact.',
+                durationMinutes: 14,
+                durationLabel: '14:40',
+                videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyBlazes.mp4',
+                thumbnailUrl: 'https://images.unsplash.com/photo-1517649763962-0c623266ddc0?auto=format&fit=crop&w=600&q=80',
+                order: 2,
+              },
+              {
+                id: 'les-rhb-3',
+                title: 'Nordic Hamstring Curls & Eccentric Deceleration',
+                description: 'Progressive overload protocol to protect the posterior kinetic chain.',
+                durationMinutes: 15,
+                durationLabel: '15:00',
+                videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+                thumbnailUrl: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=600&q=80',
+                order: 3,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'crs-basketball-04',
+        title: 'Point Guard Vision & Pick-And-Roll Motion Offense',
+        slug: 'point-guard-vision',
+        description: 'Elite spatial scanning, defensive read progression, and pocket pass execution for elite floor generals.',
+        longDescription: 'Tactical film analysis and court execution drills for basketball playmakers looking to read drop coverage, blitzes, and weakside taggers with total composure.',
+        thumbnail: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80',
+        category: 'Basketball',
+        instructorName: 'David Sterling',
+        instructorTitle: 'Pro Playmaker Coach',
+        instructorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80',
+        level: 'ALL LEVELS',
+        isPublished: true,
+        totalDurationMinutes: 38,
+        totalLessonsCount: 3,
+        rating: 4.88,
+        enrolledCount: 76,
+        badge: 'TACTICAL',
+        createdAt: 1770000000000,
+        updatedAt: 1770000000000,
+        chapters: [
+          {
+            id: 'ch-bsk-1',
+            title: 'Section 1: Spatial Scanning & Coverage Reads',
+            description: 'Deconstructing defense structures in real-time.',
+            order: 1,
+            lessons: [
+              {
+                id: 'les-bsk-1',
+                title: '360 Head-Scan Before Screen Engagement',
+                description: 'Pre-reading help defender positioning before making the downhill cut.',
+                durationMinutes: 12,
+                durationLabel: '12:20',
+                videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+                thumbnailUrl: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=600&q=80',
+                order: 1,
+              },
+              {
+                id: 'les-bsk-2',
+                title: 'The Wrap-Around Pocket Pass & Hook Pass',
+                description: 'Delivering passes under the armpit of rim protectors.',
+                durationMinutes: 14,
+                durationLabel: '14:10',
+                videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyBlazes.mp4',
+                thumbnailUrl: 'https://images.unsplash.com/photo-1517649763962-0c623266ddc0?auto=format&fit=crop&w=600&q=80',
+                order: 2,
+              },
+              {
+                id: 'les-bsk-3',
+                title: 'Pull-Up Midrange Jumper Off The Bounce',
+                description: 'Hard plant brake force to rise straight up with balanced release.',
+                durationMinutes: 12,
+                durationLabel: '12:00',
+                videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+                thumbnailUrl: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=600&q=80',
+                order: 3,
+              },
+            ],
+          },
+        ],
+      },
+    ];
+
     return {
       users: seedUsers,
       follows: [],
@@ -605,6 +963,26 @@ class DatabaseService {
         },
       ],
       sessions: seedSessions,
+      courses: seedCourses,
+      courseProgress: {},
+    };
+  }
+
+  private getEmptyState(): DbState {
+    return {
+      users: {},
+      follows: [],
+      posts: [],
+      likes: [],
+      comments: [],
+      notifications: [],
+      scans: [],
+      fixtures: [],
+      stories: [],
+      chatMessages: [],
+      sessions: [],
+      courses: [],
+      courseProgress: {},
     };
   }
 
@@ -618,39 +996,32 @@ class DatabaseService {
         const raw = fs.readFileSync(DB_FILE, 'utf-8');
         const parsed = JSON.parse(raw);
         if (parsed && typeof parsed === 'object') {
-          const loadedUsers = parsed.users && Object.keys(parsed.users).length > 0
-            ? parsed.users
-            : this.getSeedState().users;
-
-          const loadedState: DbState = {
-            users: loadedUsers,
+          return {
+            ...this.getEmptyState(),
+            ...parsed,
+            users: parsed.users || {},
             follows: parsed.follows || [],
             posts: parsed.posts || [],
             likes: parsed.likes || [],
             comments: parsed.comments || [],
             notifications: parsed.notifications || [],
-            scans: parsed.scans && parsed.scans.length > 0 ? parsed.scans : this.getSeedState().scans,
-            fixtures: parsed.fixtures && parsed.fixtures.length > 0 ? parsed.fixtures : this.getSeedState().fixtures,
+            scans: parsed.scans || [],
+            fixtures: parsed.fixtures || [],
             stories: parsed.stories || [],
             chatMessages: parsed.chatMessages || [],
-            sessions: parsed.sessions && parsed.sessions.length > 0 ? parsed.sessions : this.getSeedState().sessions,
+            sessions: parsed.sessions || [],
+            courses: parsed.courses || [],
+            courseProgress: parsed.courseProgress || {},
           };
-
-          // Save seed if missing
-          if (!parsed.users || Object.keys(parsed.users).length === 0 || !parsed.sessions) {
-            this.save(loadedState);
-          }
-
-          return loadedState;
         }
       }
     } catch (e) {
       console.error('[DB] Error loading database file:', e);
     }
 
-    const defaultState = this.getSeedState();
-    this.save(defaultState);
-    return defaultState;
+    const emptyState = this.getEmptyState();
+    this.save(emptyState);
+    return emptyState;
   }
 
   private save(stateToSave?: DbState): void {
@@ -1303,16 +1674,23 @@ class DatabaseService {
       date: sessionData.date || new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date()),
       timestamp: sessionData.timestamp || now,
       durationMinutes: Number(sessionData.durationMinutes) || 45,
-      topSpeedKmh: Number(sessionData.topSpeedKmh) || 30.5,
-      avgHeartRateBpm: Number(sessionData.avgHeartRateBpm) || 148,
-      maxHeartRateBpm: Number(sessionData.maxHeartRateBpm) || 180,
-      distanceKm: Number(sessionData.distanceKm) || 5.2,
+      topSpeedKmh: sessionData.topSpeedKmh ? Number(sessionData.topSpeedKmh) : undefined,
+      avgHeartRateBpm: sessionData.avgHeartRateBpm ? Number(sessionData.avgHeartRateBpm) : undefined,
+      maxHeartRateBpm: sessionData.maxHeartRateBpm ? Number(sessionData.maxHeartRateBpm) : undefined,
+      distanceKm: sessionData.distanceKm ? Number(sessionData.distanceKm) : undefined,
       leftGroundForceN: Number(sessionData.leftGroundForceN) || 1150,
       rightGroundForceN: Number(sessionData.rightGroundForceN) || 1180,
       symmetryPct: Number(sessionData.symmetryPct) || 96,
       jointTorqueNm: Number(sessionData.jointTorqueNm) || 175,
       acwr: Number(sessionData.acwr) || 1.12,
       rpeLoadScore: Number(sessionData.rpeLoadScore) || 7.5,
+      sport: sessionData.sport,
+      goalsScored: sessionData.goalsScored !== undefined ? Number(sessionData.goalsScored) : undefined,
+      assistsGiven: sessionData.assistsGiven !== undefined ? Number(sessionData.assistsGiven) : undefined,
+      runsScored: sessionData.runsScored !== undefined ? Number(sessionData.runsScored) : undefined,
+      wicketsTaken: sessionData.wicketsTaken !== undefined ? Number(sessionData.wicketsTaken) : undefined,
+      pointsScored: sessionData.pointsScored !== undefined ? Number(sessionData.pointsScored) : undefined,
+      scoreResult: sessionData.scoreResult,
       notes: sessionData.notes || '',
       telemetryPoints: sessionData.telemetryPoints || [],
     };
@@ -1352,6 +1730,13 @@ class DatabaseService {
           user.stats.games = (user.stats.games || 0) + 1;
         }
 
+        // Increment sports stats
+        if (newSession.goalsScored !== undefined) user.stats.goals = (user.stats.goals || 0) + newSession.goalsScored;
+        if (newSession.assistsGiven !== undefined) user.stats.assists = (user.stats.assists || 0) + newSession.assistsGiven;
+        if (newSession.runsScored !== undefined) user.stats.runs = (user.stats.runs || 0) + newSession.runsScored;
+        if (newSession.wicketsTaken !== undefined) user.stats.wickets = (user.stats.wickets || 0) + newSession.wicketsTaken;
+        if (newSession.pointsScored !== undefined) user.stats.points = (user.stats.points || 0) + newSession.pointsScored;
+
         // Calculate force balance %
         const totalForce = newSession.leftGroundForceN + newSession.rightGroundForceN;
         if (totalForce > 0) {
@@ -1375,8 +1760,11 @@ class DatabaseService {
             score: 'Played',
             status: 'completed',
             minutesPlayed: newSession.durationMinutes,
-            goalsScored: 0,
-            assistsGiven: 0,
+            goalsScored: newSession.goalsScored || 0,
+            assistsGiven: newSession.assistsGiven || 0,
+            runsScored: newSession.runsScored,
+            wicketsTaken: newSession.wicketsTaken,
+            pointsScored: newSession.pointsScored,
           });
         }
       }
@@ -1385,6 +1773,202 @@ class DatabaseService {
     this.save();
     const updatedAthlete = this.formatUserProfile(sessionData.athleteId);
     return { session: newSession, athlete: updatedAthlete };
+  }
+
+  // ==========================================================
+  // COURSES & ACADEMY METHODS
+  // ==========================================================
+
+  public getCourses(includeUnpublished = false): Course[] {
+    const list = this.state.courses || [];
+    if (includeUnpublished) return list;
+    return list.filter((c) => c.isPublished);
+  }
+
+  public getCourseById(id: string): Course | null {
+    return (this.state.courses || []).find((c) => c.id === id) || null;
+  }
+
+  public saveCourse(courseData: Partial<Course>): { success: boolean; course: Course; isNew: boolean } {
+    if (!this.state.courses) this.state.courses = [];
+    const existingIdx = this.state.courses.findIndex((c) => c.id === courseData.id);
+    const now = Date.now();
+
+    // Recalculate total duration & total lessons count
+    const chapters = courseData.chapters || [];
+    let totalDuration = 0;
+    let totalLessons = 0;
+    chapters.forEach((ch) => {
+      (ch.lessons || []).forEach((les) => {
+        totalLessons += 1;
+        totalDuration += les.durationMinutes || 0;
+      });
+    });
+
+    if (existingIdx >= 0) {
+      const updated: Course = {
+        ...this.state.courses[existingIdx],
+        ...courseData,
+        chapters,
+        totalDurationMinutes: totalDuration || courseData.totalDurationMinutes || 30,
+        totalLessonsCount: totalLessons || courseData.totalLessonsCount || 1,
+        updatedAt: now,
+      } as Course;
+      this.state.courses[existingIdx] = updated;
+      this.save();
+      return { success: true, course: updated, isNew: false };
+    } else {
+      const newCourse: Course = {
+        id: courseData.id || `crs-${Date.now()}`,
+        title: courseData.title || 'Untitled Sports Masterclass',
+        slug: (courseData.title || 'course').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        description: courseData.description || 'Comprehensive training breakdown.',
+        longDescription: courseData.longDescription || courseData.description || '',
+        thumbnail: courseData.thumbnail || 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=800&q=80',
+        category: (courseData.category as any) || 'Football',
+        instructorName: courseData.instructorName || 'Apex Performance Coach',
+        instructorTitle: courseData.instructorTitle || 'Elite Staff Coach',
+        instructorAvatar: courseData.instructorAvatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80',
+        level: courseData.level || 'ALL LEVELS',
+        isPublished: courseData.isPublished !== undefined ? courseData.isPublished : true,
+        totalDurationMinutes: totalDuration || 45,
+        totalLessonsCount: totalLessons || 3,
+        rating: courseData.rating || 4.9,
+        enrolledCount: courseData.enrolledCount || 0,
+        badge: courseData.badge || 'NEW',
+        createdAt: now,
+        updatedAt: now,
+        chapters: chapters.length > 0 ? chapters : [
+          {
+            id: `ch-${now}-1`,
+            title: 'Chapter 1: Fundamentals & Field Mechanics',
+            description: 'Core tactical foundations and drill progressions.',
+            order: 1,
+            lessons: [
+              {
+                id: `les-${now}-1`,
+                title: 'Introduction & Biomechanical Objectives',
+                description: 'Key principles and kinetic indicators to focus on.',
+                durationMinutes: 10,
+                durationLabel: '10:00',
+                videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+                thumbnailUrl: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=600&q=80',
+                order: 1,
+              },
+            ],
+          },
+        ],
+      };
+
+      this.state.courses.unshift(newCourse);
+      this.save();
+      return { success: true, course: newCourse, isNew: true };
+    }
+  }
+
+  public deleteCourse(id: string): { success: boolean } {
+    if (!this.state.courses) return { success: false };
+    const beforeLen = this.state.courses.length;
+    this.state.courses = this.state.courses.filter((c) => c.id !== id);
+    if (this.state.courses.length !== beforeLen) {
+      this.save();
+      return { success: true };
+    }
+    return { success: false };
+  }
+
+  public enrollUserInCourse(userId: string, courseId: string): { success: boolean; progress: UserCourseProgress } {
+    if (!this.state.courseProgress) this.state.courseProgress = {};
+    const key = `${userId}_${courseId}`;
+    const course = this.getCourseById(courseId);
+
+    if (this.state.courseProgress[key]) {
+      return { success: true, progress: this.state.courseProgress[key] };
+    }
+
+    // Determine first lesson
+    const firstLessonId = course?.chapters?.[0]?.lessons?.[0]?.id;
+
+    const progress: UserCourseProgress = {
+      userId,
+      courseId,
+      enrolledAt: Date.now(),
+      completedLessonIds: [],
+      lastWatchedLessonId: firstLessonId,
+      lastWatchedPositionSec: 0,
+      lastWatchedTimestamp: Date.now(),
+      overallProgressPct: 0,
+    };
+
+    this.state.courseProgress[key] = progress;
+
+    // Increment enrolled count on course
+    if (course) {
+      course.enrolledCount = (course.enrolledCount || 0) + 1;
+    }
+
+    this.save();
+    return { success: true, progress };
+  }
+
+  public updateCourseProgress(
+    userId: string,
+    courseId: string,
+    lessonId: string,
+    positionSec = 0,
+    completed = false
+  ): { success: boolean; progress: UserCourseProgress } {
+    if (!this.state.courseProgress) this.state.courseProgress = {};
+    const key = `${userId}_${courseId}`;
+    let prog = this.state.courseProgress[key];
+
+    if (!prog) {
+      prog = {
+        userId,
+        courseId,
+        enrolledAt: Date.now(),
+        completedLessonIds: [],
+        lastWatchedLessonId: lessonId,
+        lastWatchedPositionSec: positionSec,
+        lastWatchedTimestamp: Date.now(),
+        overallProgressPct: 0,
+      };
+    }
+
+    prog.lastWatchedLessonId = lessonId;
+    prog.lastWatchedPositionSec = Math.floor(positionSec);
+    prog.lastWatchedTimestamp = Date.now();
+
+    if (completed && !prog.completedLessonIds.includes(lessonId)) {
+      prog.completedLessonIds.push(lessonId);
+    }
+
+    // Calculate progress %
+    const course = this.getCourseById(courseId);
+    if (course) {
+      let totalLessons = 0;
+      course.chapters?.forEach((ch) => {
+        totalLessons += ch.lessons?.length || 0;
+      });
+      if (totalLessons > 0) {
+        prog.overallProgressPct = Math.min(100, Math.round((prog.completedLessonIds.length / totalLessons) * 100));
+      }
+    }
+
+    this.state.courseProgress[key] = prog;
+    this.save();
+    return { success: true, progress: prog };
+  }
+
+  public getUserCoursesProgress(userId: string): Record<string, UserCourseProgress> {
+    if (!this.state.courseProgress) return {};
+    const result: Record<string, UserCourseProgress> = {};
+    Object.entries(this.state.courseProgress).forEach(([key, prog]) => {
+      if (prog.userId === userId) {
+        result[prog.courseId] = prog;
+      }
+    });
+    return result;
   }
 }
 

@@ -82,7 +82,7 @@ export const SPORTS_CONFIG: Record<SportType, SportConfig> = {
         formation: '4-3-3 Attacking Press',
         players: [
           { name: 'S. Vance', number: 11, position: 'LW', x: 20, y: 18 },
-          { name: 'M. Rush', number: 9, position: 'ST', x: 50, y: 14 },
+          { name: 'R. Kumar', number: 9, position: 'ST', x: 50, y: 14 },
           { name: 'E. Voss', number: 7, position: 'RW', x: 80, y: 18 },
           { name: 'M. Silva', number: 8, position: 'CM', x: 28, y: 44 },
           { name: 'T. Al-Mansoor', number: 6, position: 'CDM', x: 50, y: 52 },
@@ -97,7 +97,7 @@ export const SPORTS_CONFIG: Record<SportType, SportConfig> = {
       {
         formation: '4-2-3-1 Modern Control',
         players: [
-          { name: 'M. Rush', number: 9, position: 'ST', x: 50, y: 14 },
+          { name: 'R. Kumar', number: 9, position: 'ST', x: 50, y: 14 },
           { name: 'S. Vance', number: 11, position: 'LAM', x: 22, y: 32 },
           { name: 'D. Sterling', number: 10, position: 'CAM', x: 50, y: 30 },
           { name: 'E. Voss', number: 7, position: 'RAM', x: 78, y: 32 },
@@ -160,7 +160,7 @@ export const SPORTS_CONFIG: Record<SportType, SportConfig> = {
       {
         formation: '1-2-2 High Post & Motion',
         players: [
-          { name: 'M. Rush', number: 1, position: 'PG', x: 50, y: 78 },
+          { name: 'R. Kumar', number: 1, position: 'PG', x: 50, y: 78 },
           { name: 'E. Voss', number: 2, position: 'SG', x: 22, y: 55 },
           { name: 'S. Vance', number: 3, position: 'SF', x: 78, y: 55 },
           { name: 'D. Sterling', number: 4, position: 'PF', x: 32, y: 28 },
@@ -170,7 +170,7 @@ export const SPORTS_CONFIG: Record<SportType, SportConfig> = {
       {
         formation: '5-Out Perimeter Spacing',
         players: [
-          { name: 'M. Rush', number: 1, position: 'PG', x: 50, y: 82 },
+          { name: 'R. Kumar', number: 1, position: 'PG', x: 50, y: 82 },
           { name: 'E. Voss', number: 2, position: 'SG', x: 18, y: 60 },
           { name: 'S. Vance', number: 3, position: 'SF', x: 82, y: 60 },
           { name: 'D. Sterling', number: 4, position: 'PF', x: 16, y: 28 },
@@ -229,7 +229,7 @@ export const SPORTS_CONFIG: Record<SportType, SportConfig> = {
         formation: 'Aggressive T20 7-4 Lineup',
         players: [
           { name: 'S. Vance', number: 11, position: 'WK', x: 50, y: 20 },
-          { name: 'M. Rush', number: 9, position: 'Slip', x: 38, y: 24 },
+          { name: 'R. Kumar', number: 9, position: 'Slip', x: 38, y: 24 },
           { name: 'E. Voss', number: 7, position: 'Bowler', x: 50, y: 78 },
           { name: 'D. Sterling', number: 10, position: 'Cover', x: 20, y: 46 },
           { name: 'M. Silva', number: 8, position: 'Mid-Wicket', x: 80, y: 46 },
@@ -282,14 +282,14 @@ export const SPORTS_CONFIG: Record<SportType, SportConfig> = {
       {
         formation: 'Singles Championship Seed #1',
         players: [
-          { name: 'M. Rush', number: 1, position: 'Player', x: 50, y: 82 },
+          { name: 'R. Kumar', number: 1, position: 'Player', x: 50, y: 82 },
           { name: 'Opponent', number: 2, position: 'Rival', x: 50, y: 18 },
         ]
       },
       {
         formation: 'Doubles Tactical Server & Volley',
         players: [
-          { name: 'M. Rush', number: 1, position: 'Server', x: 32, y: 84 },
+          { name: 'R. Kumar', number: 1, position: 'Server', x: 32, y: 84 },
           { name: 'E. Voss', number: 7, position: 'Net', x: 68, y: 60 },
           { name: 'Rival 1', number: 10, position: 'Return', x: 68, y: 16 },
           { name: 'Rival 2', number: 11, position: 'Net', x: 32, y: 40 },
@@ -346,7 +346,7 @@ export const SPORTS_CONFIG: Record<SportType, SportConfig> = {
       {
         formation: '15-a-side Dominant Pack',
         players: [
-          { name: 'M. Rush', number: 10, position: 'Fly-Half', x: 50, y: 55 },
+          { name: 'R. Kumar', number: 10, position: 'Fly-Half', x: 50, y: 55 },
           { name: 'S. Vance', number: 11, position: 'Winger', x: 18, y: 35 },
           { name: 'E. Voss', number: 14, position: 'Winger', x: 82, y: 35 },
           { name: 'T. Al-Mansoor', number: 12, position: 'Centre', x: 38, y: 45 },
@@ -404,7 +404,7 @@ export const SPORTS_CONFIG: Record<SportType, SportConfig> = {
           { name: 'L. Walker', number: 1, position: 'Leg 1 (Start)', x: 22, y: 78 },
           { name: 'S. Vance', number: 2, position: 'Leg 2 (Straight)', x: 22, y: 25 },
           { name: 'E. Voss', number: 3, position: 'Leg 3 (Curve)', x: 78, y: 25 },
-          { name: 'M. Rush', number: 4, position: 'Leg 4 (Anchor)', x: 78, y: 78 },
+          { name: 'R. Kumar', number: 4, position: 'Leg 4 (Anchor)', x: 78, y: 78 },
         ]
       }
     ]
@@ -456,7 +456,7 @@ export const SPORTS_CONFIG: Record<SportType, SportConfig> = {
       {
         formation: '3-3-3-1 Attacking Press',
         players: [
-          { name: 'M. Rush', number: 9, position: 'CF', x: 50, y: 16 },
+          { name: 'R. Kumar', number: 9, position: 'CF', x: 50, y: 16 },
           { name: 'S. Vance', number: 11, position: 'LW', x: 24, y: 34 },
           { name: 'E. Voss', number: 7, position: 'RW', x: 76, y: 34 },
           { name: 'D. Sterling', number: 10, position: 'AH', x: 50, y: 44 },

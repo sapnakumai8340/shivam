@@ -28,7 +28,7 @@ interface ScheduleModalProps {
 }
 
 const AVAILABLE_SQUAD_PLAYERS = [
-  { id: 'APX-9942', name: 'Marcus Rush', defaultNumber: 9, defaultReadiness: 98, avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80' },
+  { id: 'APX-9942', name: 'Rahul Kumar', defaultNumber: 9, defaultReadiness: 98, avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80' },
   { id: 'APX-7710', name: 'Elena Voss', defaultNumber: 7, defaultReadiness: 97, avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=256&q=80' },
   { id: 'APX-8831', name: 'Sarah Vance', defaultNumber: 11, defaultReadiness: 94, avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80' },
   { id: 'APX-6604', name: 'David Sterling', defaultNumber: 10, defaultReadiness: 92, avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=256&q=80' },
